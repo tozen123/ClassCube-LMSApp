@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ClassCube</string>
+
+    <string name="register">Create Account</string>
+    <string name="login">  Login</string>
+    <string name="login_header">Login</string>
+    <string name="name">  Name</string>
+    <string name="email">  Email</string>
+    <string name="password">  Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="signup">Sign Up</string>
+    <string name="agreement">By tapping the Sign up, you already read and agreed to our <font fgcolor='#0000FF'><u>Terms and Condition.</u></font></string>
+    <string name="student">Student</string>
+    <string name="teacher_instructor_professor">Teacher/Instructor/Professor</string>
+    <string name="already_have_an_account"><font fgcolor='#0000FF'>Already have an account?</font></string>
+    <string name="smallnotestr">Log in to your existent account of CubeClass</string>
+
+    <string name="forgot_password"><font fgcolor='#0000FF'>Forgot Password?</font></string>
+    <string name="donthaveanaccount">Don\'t have an account? <font fgcolor='#0000FF'><u>Create Account</u></font></string>
+</resources>

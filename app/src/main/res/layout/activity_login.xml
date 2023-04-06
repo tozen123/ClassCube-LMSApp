@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:padding="18dp"
+    >
+    <TextView
+        android:id="@+id/appname_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+
+        android:textColor="@color/black"
+        android:textSize="36sp"
+
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="20dp"
+
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/register_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_header"
+
+        android:textColor="@color/black"
+        android:textSize="36sp"
+
+        android:layout_below="@+id/appname_header"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <TextView
+        android:id="@+id/smallnote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/smallnotestr"
+
+        android:textColor="#636363"
+        android:textSize="12sp"
+
+        android:layout_below="@+id/register_title"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <EditText
+        android:id="@+id/edtxt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+
+        android:textSize="16sp"
+        android:hint="@string/email"
+
+        android:layout_below="@+id/smallnote"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <EditText
+        android:id="@+id/edtxt_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+
+        android:textSize="16sp"
+        android:hint="@string/password"
+
+        android:layout_below="@+id/edtxt_email"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <TextView
+        android:id="@+id/btn_forgotPasswordtxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+
+        android:textColor="#636363"
+        android:textSize="12sp"
+        android:gravity="end"
+        android:layout_below="@+id/edtxt_password"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <Button
+        android:id="@+id/btn_logintxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login_header"
+
+        android:layout_below="@+id/btn_forgotPasswordtxt"
+
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <TextView
+        android:id="@+id/btn_doesntHaveAnAccountTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_logintxt"
+
+        android:text="@string/donthaveanaccount"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="20dp"
+        />
+</RelativeLayout>

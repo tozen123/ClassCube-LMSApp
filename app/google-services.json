@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "515828462752",
+    "project_id": "classcubedb",
+    "storage_bucket": "classcubedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515828462752:android:a755a682a38a7c7951c5c5",
+        "android_client_info": {
+          "package_name": "com.doublehammerstudios.classcube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515828462752-ke5081krgt1i5gsj1b1qfs7e6lc9mobk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF-8Aisxy_G7BXPMn5GA_wc5WlGZQVazM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515828462752-ke5081krgt1i5gsj1b1qfs7e6lc9mobk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
