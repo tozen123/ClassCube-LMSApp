@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
     private ArrayList<Class> classArrayList;
     private Context context;
-
+    private View.OnClickListener onClickListener;
     // creating constructor for our adapter class
     public AdapterItem(ArrayList<Class> classArrayList, Context context) {
         this.classArrayList = classArrayList;
@@ -31,12 +31,14 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
     public void onBindViewHolder(@NonNull AdapterItem.ViewHolder holder, int position) {
         // setting data to our text views from our modal class.
         Class aClass = classArrayList.get(position);
+
         holder.classNameValue.setText(aClass.getClassName());
         holder.classCodeValue.setText(aClass.getClassCode());
         holder.classSubjectValue.setText(aClass.getClassSubject());
         holder.classTeacherValue.setText(aClass.getClassTeacherID());
         holder.classTeacherNameValue.setText(aClass.getClassTeacherName());
     }
+
 
     @Override
     public int getItemCount() {

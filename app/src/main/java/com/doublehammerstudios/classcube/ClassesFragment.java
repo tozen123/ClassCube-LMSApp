@@ -69,11 +69,11 @@ public class ClassesFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View viewz) {
+            public void onClick(View view) {
                 if(mConfigs.userType.equals("Student")){
-                    showJoinClassDialogButtonClicked(viewz);
+                    showJoinClassDialogButtonClicked(view);
                 } else if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
-                    showCreateClassDialogButtonClicked(viewz);
+                    showCreateClassDialogButtonClicked(view);
                 }
 
             }
@@ -83,6 +83,7 @@ public class ClassesFragment extends Fragment {
         classArrayList = new ArrayList<>();
         classRecyclerView.setHasFixedSize(true);
         classRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         // adding our array list to our recycler view adapter class.
         classRecyclerViewAdapter = new AdapterItem(classArrayList, getActivity());
 
@@ -145,12 +146,25 @@ public class ClassesFragment extends Fragment {
                         }
                     });
         }
+
+        RecyclerView recyclerView = view.findViewById(R.id.idRecyclerViewClass);
+        recyclerView.addOnItemTouchListener(
+                new ClassHandler(getContext(), recyclerView ,new ClassHandler.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Class c = null;
+                        Log.d("SUPPERTAGGER4", "2view: "+view.getClass().getPackage());
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_classes, container, false);
     }
 
@@ -193,11 +207,22 @@ public class ClassesFragment extends Fragment {
         dialog.show();
     }
 
-    // Do something with the data coming from the AlertDialog
     private void CreateClass(String cc_className, String cc_classCode, String cc_classSubject){
         Class newClass = new Class(cc_className, cc_classCode, cc_classSubject, userId, Configs.userName, null);
         firebaseFirestore.collection("class")
-                .add(newClass);
+                .add(newClass)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getActivity(), "Class Name: "+cc_className+" was successfully created!", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Class Name: "+cc_className+" was not created! due to: " + e.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public void showJoinClassDialogButtonClicked(View view) {
@@ -211,30 +236,26 @@ public class ClassesFragment extends Fragment {
 
         // add a button
         builder.setPositiveButton("Join", (dialog, which) -> {
-            // send data from the AlertDialog to the Activity
             EditText input_classCode = customLayout.findViewById(R.id.edt_classCode_join);
             if(input_classCode.getText().toString().isEmpty()){
                 Toast.makeText(getActivity(), "Error: failed to join class due to field, Class Code being empty", Toast.LENGTH_LONG).show();
             } else {
                 JoinClass(input_classCode.getText().toString());
             }
-
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> {
             dialog.cancel();
         });
 
-        // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.show();
     }
 
-    // Do something with the data coming from the AlertDialog
-    private void JoinClass(String classCode){
 
+    private void JoinClass(String classCode){
         firebaseFirestore.collection("class")
                 .whereEqualTo("classCode", classCode)
                 .get()
@@ -243,14 +264,13 @@ public class ClassesFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("SUPERTAGGER3", document.getId() + " => " + document.getData());
-
+                                Toast.makeText(getActivity(), "Successfully joined class: "+document.getString("className"), Toast.LENGTH_SHORT).show();
                                 firebaseFirestore.collection("class")
                                         .document(document.getId())
                                         .update("classStudents", FieldValue.arrayUnion(userId));
                             }
                         } else {
-                            Log.d("SUPERTAGGER3", "Error getting documents: ", task.getException());
+                            Toast.makeText(getActivity(), "Error getting documents: "+task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
