@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,10 +16,14 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
     private ArrayList<Class> classArrayList;
     private Context context;
     private View.OnClickListener onClickListener;
-    // creating constructor for our adapter class
-    public AdapterItem(ArrayList<Class> classArrayList, Context context) {
+
+
+
+    private ClassHandler listener;
+    public AdapterItem(ArrayList<Class> classArrayList, Context context, ClassHandler listener) {
         this.classArrayList = classArrayList;
         this.context = context;
+        this.listener = listener;
     }
     @NonNull
     @Override
@@ -37,8 +42,14 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
         holder.classSubjectValue.setText(aClass.getClassSubject());
         holder.classTeacherValue.setText(aClass.getClassTeacherID());
         holder.classTeacherNameValue.setText(aClass.getClassTeacherName());
-    }
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClassClicked(classArrayList.get(position));
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -48,6 +59,7 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our text views.
+        public CardView cardView;
         private final TextView classNameValue;
         private final TextView classCodeValue;
         private final TextView classSubjectValue;
@@ -56,6 +68,8 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            cardView = itemView.findViewById(R.id.classItemId);
             // initializing our text views.
             classNameValue = itemView.findViewById(R.id.classNameValue);
             classCodeValue = itemView.findViewById(R.id.classCodeValue);

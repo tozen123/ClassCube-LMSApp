@@ -1,6 +1,7 @@
 package com.doublehammerstudios.classcube;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -42,7 +44,7 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 
-public class ClassesFragment extends Fragment {
+public class ClassesFragment extends Fragment implements ClassHandler{
     Configs mConfigs;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -52,6 +54,7 @@ public class ClassesFragment extends Fragment {
     private ArrayList<Class> classArrayList;
     private AdapterItem classRecyclerViewAdapter;
     ProgressBar loadingPB;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,6 +68,7 @@ public class ClassesFragment extends Fragment {
         userId = firebaseAuth.getCurrentUser().getUid();
 
         mConfigs = Configs.getInstance();
+
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,13 +89,14 @@ public class ClassesFragment extends Fragment {
         classRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // adding our array list to our recycler view adapter class.
-        classRecyclerViewAdapter = new AdapterItem(classArrayList, getActivity());
+        classRecyclerViewAdapter = new AdapterItem(classArrayList, getActivity(), this::onClassClicked);
 
         // setting adapter to our recycler view.
         classRecyclerView.setAdapter(classRecyclerViewAdapter);
-        if(mConfigs.userType.equals("Student")){
-            firebaseFirestore.collection("class").whereArrayContains("classStudents", userId).get()
 
+        if(mConfigs.userType.equals("Student")){
+            firebaseFirestore.collection("class")
+                    .whereArrayContains("classStudents", userId).get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -100,6 +105,8 @@ public class ClassesFragment extends Fragment {
                                 List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
                                 for (DocumentSnapshot documentSnapshot : list) {
+                                    Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
+
                                     Class c = documentSnapshot.toObject(Class.class);
                                     classArrayList.add(c);
                                 }
@@ -128,6 +135,7 @@ public class ClassesFragment extends Fragment {
                                 for (DocumentSnapshot documentSnapshot : list) {
                                     if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
                                         if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
+                                            Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
                                             Class c = documentSnapshot.toObject(Class.class);
                                             classArrayList.add(c);
                                         }
@@ -146,20 +154,6 @@ public class ClassesFragment extends Fragment {
                         }
                     });
         }
-
-        RecyclerView recyclerView = view.findViewById(R.id.idRecyclerViewClass);
-        recyclerView.addOnItemTouchListener(
-                new ClassHandler(getContext(), recyclerView ,new ClassHandler.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Class c = null;
-                        Log.d("SUPPERTAGGER4", "2view: "+view.getClass().getPackage());
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
     }
 
     @Override
@@ -274,5 +268,17 @@ public class ClassesFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onClassClicked(Class selectedClass) {
+
+        Toast.makeText(getActivity(), "Opening Class Name: "+selectedClass.getClassName(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getActivity(), viewClass.class);
+        intent.putExtra("CLASS_DATA", selectedClass);
+
+        startActivity(intent);
+
     }
 }

@@ -1,14 +1,14 @@
 package com.doublehammerstudios.classcube;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Class {
+public class Class implements Serializable {
     String className;
     String classCode;
     String classSubject;
     String classTeacherID;
     String classTeacherName;
-
     ArrayList<String> classStudents = new ArrayList<String>();
 
     public Class() {

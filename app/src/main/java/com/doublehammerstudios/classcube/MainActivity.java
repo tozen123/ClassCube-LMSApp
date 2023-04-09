@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.nav_classes:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ClassesFragment()).commit();
                 break;
+            case R.id.nav_settings:
+                Intent intent = new Intent(MainActivity.this, settings.class);
+                startActivity(intent);
+                break;
             case R.id.nav_logout:
                 userLogout();
                 break;
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     private void userLogout(){
-        FirebaseAuth.getInstance().signOut();//logout
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
@@ -127,13 +131,3 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 }
-
-// Student Class Handler
-// Firestore Data
-/*
-
-Email "titanzghoul@gmail.com"
-Name "Marvin Peña"
-TypeOfUser "Student"
-
-*/

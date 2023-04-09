@@ -12,6 +12,21 @@
         android:theme="@style/Theme.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".viewClassInfo"
+            android:exported="false" />
+        <activity
+            android:name=".viewedClassActivity"
+            android:exported="false" />
+        <activity
+            android:name=".settings"
+            android:exported="false" />
+        <activity
+            android:name=".post_creator"
+            android:exported="false" />
+        <activity
+            android:name=".viewClass"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordFactor"
             android:exported="false" />
         <activity
@@ -19,24 +34,19 @@
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>

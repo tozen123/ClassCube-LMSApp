@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".viewClassInfo"
+    android:padding="20dp">
+
+
+    <TextView
+        android:id="@+id/noStudentEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_centerInParent="true"
+        android:text="No student has joined this class" />
+
+    <TextView
+        android:id="@+id/viewClassInfo_className"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:text="ClassName" />
+
+    <Button
+        android:id="@+id/viewClassInfo_deleteClassButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="Delete Class" />
+
+    <TextView
+        android:id="@+id/viewClassInfo_studentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="40dp"
+        android:text="Students"
+        android:layout_below="@+id/viewClassInfo_className"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewClassInfo_recyclerView"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/viewClassInfo_studentName"
+        />
+</RelativeLayout>
