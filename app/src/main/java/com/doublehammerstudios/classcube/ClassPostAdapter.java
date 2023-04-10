@@ -11,14 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-/*
-fix recycler view
-posting system
- */
 public class ClassPostAdapter extends RecyclerView.Adapter<ClassPostAdapter.ViewHolder>{
-    private ArrayList<ClassPost> classPostArrayList;
+    private static ArrayList<ClassPost> classPostArrayList;
     private Context context;
-
+    private ItemClickListener mClickListener;
     public ClassPostAdapter(ArrayList<ClassPost> classPostArrayList, Context context) {
         this.classPostArrayList = classPostArrayList;
         this.context = context;
@@ -52,7 +48,8 @@ public class ClassPostAdapter extends RecyclerView.Adapter<ClassPostAdapter.View
         return classPostArrayList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // creating variables for our text views.
         private final TextView postTitle;
         private final TextView postSubject;
@@ -64,6 +61,29 @@ public class ClassPostAdapter extends RecyclerView.Adapter<ClassPostAdapter.View
             postTitle = itemView.findViewById(R.id.id_textview_classPostTitle);
             postSubject = itemView.findViewById(R.id.id_textview_classPostSubject);
             postDueDate = itemView.findViewById(R.id.id_textview_classPostDuedate);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+        }
+
     }
+    // convenience method for getting data at click position
+    static ClassPost getItem(int id) {
+        return classPostArrayList.get(id);
+    }
+
+    // allows clicks events to be caught
+    void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    // parent activity will implement this method to respond to click events
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
 }

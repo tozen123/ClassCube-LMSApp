@@ -1,5 +1,7 @@
 package com.doublehammerstudios.classcube;
 
+import android.view.View;
+
 import com.google.type.DateTime;
 
 import java.io.Serializable;
@@ -13,6 +15,8 @@ public class ClassPost implements Serializable {
         this.classPostTitle = classPostTitle;
         this.classPostSubject = classPostSubject;
         this.classPostDuedate = classPostDuedate;
+
+
     }
 
     public String getClassPostTitle() {
@@ -27,3 +31,4 @@ public class ClassPost implements Serializable {
         return classPostDuedate;
     }
 }
+

@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class viewClass extends AppCompatActivity {
+public class viewClass extends AppCompatActivity implements ClassPostAdapter.ItemClickListener{
     public Class CLASS_DATA;
     public String CLASS_DOC_ID;
     private TextView textView_className ,textView_classCode, textView_classSubject, textView_classTeacher;
@@ -114,27 +114,32 @@ public class viewClass extends AppCompatActivity {
                     }
                 });
 
-        ArrayList<ClassPost> myObjects = new ArrayList<>();
+        List<ClassPost> myObjects = new ArrayList<>();
+        ClassPostAdapter classPostAdapter = new ClassPostAdapter((ArrayList<ClassPost>) myObjects, viewClass.this);
+        classPostAdapter.setClickListener(viewClass.this);
+
         RecyclerView recyclerView = findViewById(R.id.classDocsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(viewClass.this));
-        classPostAdapterRecyclerView = new ClassPostAdapter(myObjects, viewClass.this);
 
+        recyclerView.setAdapter(classPostAdapter);
+        String TAG = "viewClass.javaData";
         firebaseFirestore.collection("class")
                 .whereEqualTo("classCode", CLASS_DATA.classCode)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.w(TAG, "Listen failed.", error);
+                            return;
+                        }
 
-                        // after getting the data we are calling on success method
-                        // and inside this method we are checking if the received
-                        // query snapshot is empty or not.
-                        if (!queryDocumentSnapshots.isEmpty()) {
+                        // Clear the existing data before adding new data
+                        myObjects.clear();
 
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        if (!value.isEmpty()) {
+                            List<DocumentSnapshot> list = value.getDocuments();
                             for (DocumentSnapshot documentSnapshot : list) {
-                                if(documentSnapshot.contains("classActivities")){
-
+                                if (documentSnapshot.contains("classActivities")) {
                                     List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
                                     for (HashMap<String, String> map : objectList) {
                                         String value1 = map.get("classPostDuedate");
@@ -145,30 +150,22 @@ public class viewClass extends AppCompatActivity {
                                     }
                                 }
                             }
-                            recyclerView.setAdapter(new ClassPostAdapter(myObjects, viewClass.this));
+                            // Notify the adapter that the data has changed
+                            classPostAdapter.notifyDataSetChanged();
 
-                            //classPostAdapterRecyclerView.notifyDataSetChanged();
-                            classPostAdapterRecyclerView.updateList(myObjects);
-
-                            if(classPostAdapterRecyclerView.getItemCount() == 0){
+                            if(myObjects.size() == 0){
                                 mtxtEmpty.setVisibility(View.VISIBLE);
                             } else {
                                 mtxtEmpty.setVisibility(View.INVISIBLE);
                             }
 
                         } else {
-                            // if the snapshot is empty we are displaying a toast message.
-                            Toast.makeText(viewClass.this, "classPostRecyclerView: No data found in Database", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "No data found in Database");
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // if we do not get any data or any error we are displaying
-                        // a toast message that we do not get any data
-                        Toast.makeText(viewClass.this, "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                    }
                 });
+
+
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,10 +175,6 @@ public class viewClass extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // ***********************************************************
-        // WORK ON Teacher – can view all students in his class
-        // ***********************************************************
 
         btnClassInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,6 +246,16 @@ public class viewClass extends AppCompatActivity {
         });
 
 
+    }
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(viewClass.this, viewedClassActivity.class);
+
+        intent.putExtra("CLASS_TITLE",  ClassPostAdapter.getItem(position).getClassPostTitle());
+        intent.putExtra("CLASS_SUBJECT",  ClassPostAdapter.getItem(position).getClassPostSubject());
+        intent.putExtra("CLASS_DUEDATE",  ClassPostAdapter.getItem(position).getClassPostDuedate());
+
+        startActivity(intent);
+        Toast.makeText(this, "" + ClassPostAdapter.getItem(position).getClassPostTitle(), Toast.LENGTH_SHORT).show();
     }
 
     public void showStudentList(List<String> stdList) {

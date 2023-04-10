@@ -36,7 +36,7 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
     public String strClassName;
     classListAdapter adapter;
 
-    Button btnDeleteClass;
+    Button btnDeleteClass, btnLeaveClass;
 
     Configs mConfigs;
     FirebaseAuth firebaseAuth;
@@ -68,7 +68,15 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
         RecyclerView recyclerView = findViewById(R.id.viewClassInfo_recyclerView);
 
 
+
         mClassName.setText(strClassName);
+
+         /*
+        ------------------------------------------------------------------------------------------------------------------
+        FIX THIS PART
+        ------------------------------------------------------------------------------------------------------------------
+         */
+
         List<String> data;
         data = Arrays.asList(stdList);
         if (data.contains("No student has joined this class")) {
@@ -84,8 +92,10 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
         recyclerView.setAdapter(adapter);
 
 
+
         // Get
         btnDeleteClass = findViewById(R.id.viewClassInfo_deleteClassButton);
+        btnLeaveClass = findViewById(R.id.viewClassInfo_leaveClassButton);
         btnDeleteClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +126,31 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
                         });
             }
         });
+        /*
+        ------------------------------------------------------------------------------------------------------------------
+        ADD THIS FEATURE: LEAVE CLASS BUTTON FOR STUDENTS
+        ------------------------------------------------------------------------------------------------------------------
+        */
+        btnLeaveClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //HERE
+            }
+        });
+
+        if(Configs.userType.equals("Student")){
+            btnDeleteClass.setVisibility(View.INVISIBLE);
+            btnDeleteClass.setEnabled(false);
+
+            btnLeaveClass.setVisibility(View.VISIBLE);
+            btnLeaveClass.setEnabled(true);
+        } else if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
+            btnLeaveClass.setVisibility(View.INVISIBLE);
+            btnLeaveClass.setEnabled(false);
+
+            btnDeleteClass.setVisibility(View.VISIBLE);
+            btnDeleteClass.setEnabled(true);
+        }
     }
 
     @Override

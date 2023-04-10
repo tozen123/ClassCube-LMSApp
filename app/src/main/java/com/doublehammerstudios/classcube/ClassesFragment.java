@@ -83,79 +83,87 @@ public class ClassesFragment extends Fragment implements ClassHandler{
             }
         });
 
-        // creating our new array list
         classArrayList = new ArrayList<>();
         classRecyclerView.setHasFixedSize(true);
         classRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        // adding our array list to our recycler view adapter class.
         classRecyclerViewAdapter = new AdapterItem(classArrayList, getActivity(), this::onClassClicked);
 
-        // setting adapter to our recycler view.
         classRecyclerView.setAdapter(classRecyclerViewAdapter);
 
-        if(mConfigs.userType.equals("Student")){
-            firebaseFirestore.collection("class")
-                    .whereArrayContains("classStudents", userId).get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-                                loadingPB.setVisibility(View.GONE);
-                                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                                for (DocumentSnapshot documentSnapshot : list) {
-                                    Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
-
-                                    Class c = documentSnapshot.toObject(Class.class);
-                                    classArrayList.add(c);
-                                }
-                                classRecyclerViewAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
-                                loadingPB.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }else{
-            firebaseFirestore.collection("class").get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-
-                                loadingPB.setVisibility(View.GONE);
-                                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                                for (DocumentSnapshot documentSnapshot : list) {
-                                    if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
-                                        if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
-                                            Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
-                                            Class c = documentSnapshot.toObject(Class.class);
-                                            classArrayList.add(c);
-                                        }
-                                    }
-                                }
-                                classRecyclerViewAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
-                                loadingPB.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        if(mConfigs.userType.equals("Student")) {
+            studentViewClass();
+        } else {
+            teacherViewClass();
         }
     }
+    public void teacherViewClass()
+    {
+        firebaseFirestore.collection("class")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
+                        classArrayList.clear();
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                            for (DocumentSnapshot documentSnapshot : list) {
+                                if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
+                                    if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
+                                        Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
+                                        Class c = documentSnapshot.toObject(Class.class);
+                                        classArrayList.add(c);
+                                    }
+                                }
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
+                        }
+
+                        classRecyclerViewAdapter.notifyDataSetChanged();
+                        loadingPB.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
+    public void studentViewClass()
+    {
+        firebaseFirestore.collection("class")
+                .whereArrayContains("classStudents", userId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Toast.makeText(getActivity(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        classArrayList.clear();
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                            for (DocumentSnapshot documentSnapshot : list) {
+                                Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
+
+                                Class c = documentSnapshot.toObject(Class.class);
+                                classArrayList.add(c);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
+                        }
+
+                        classRecyclerViewAdapter.notifyDataSetChanged();
+                        loadingPB.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
