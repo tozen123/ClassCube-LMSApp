@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         mConfigs = Configs.getInstance();
 
-        Log.d("SUPERTAGGER1", "userName: "+Configs.userName);
-        Log.d("SUPERTAGGER1", "userType: "+Configs.userType);
-
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override

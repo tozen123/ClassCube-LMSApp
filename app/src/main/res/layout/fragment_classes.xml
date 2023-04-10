@@ -11,10 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Classes"
+            android:layout_marginTop="18dp"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRecyclerViewClass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/headerTitle"
+            android:layout_marginTop="18dp"
             />
 
         <ProgressBar
@@ -23,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
+
+
 
     </RelativeLayout>
 

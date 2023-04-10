@@ -126,15 +126,30 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
                         });
             }
         });
-        /*
-        ------------------------------------------------------------------------------------------------------------------
-        ADD THIS FEATURE: LEAVE CLASS BUTTON FOR STUDENTS
-        ------------------------------------------------------------------------------------------------------------------
-        */
+
         btnLeaveClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //HERE
+                firebaseFirestore.collection("class")
+                        .whereEqualTo("classCode", mClassCode)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                    List<String> stringArray = (List<String>) documentSnapshot.get("classStudents");
+                                    if (stringArray != null) {
+                                        stringArray.remove(userId);
+                                        documentSnapshot.getReference().update("classStudents", stringArray);
+                                    }
+                                }
+                                Toast.makeText(viewClassInfo.this, "You have successfully leave the class: "+mClassCode, Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            createAlertDialog("Firestore Failure Listener", "Error:  Failed to fetch data from the database");
+                        });
             }
         });
 
