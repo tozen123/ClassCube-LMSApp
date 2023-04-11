@@ -22,7 +22,7 @@
             android:layout_height="76dp"
             android:id="@+id/toolbar"
             android:elevation="4dp"
-            android:minHeight="100dp"
+            android:minHeight="80dp"
             android:background="@color/purple_500"/>
         
         <FrameLayout

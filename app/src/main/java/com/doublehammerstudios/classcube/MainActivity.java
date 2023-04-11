@@ -34,6 +34,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
 
@@ -76,7 +78,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Objects.requireNonNull(getSupportActionBar()).setTitle("ClassCube");
+
         drawerLayout = findViewById(R.id.drawer_layout);
+
 
         navigationView.setNavigationItemSelectedListener(this);
 

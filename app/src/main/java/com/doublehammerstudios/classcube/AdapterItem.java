@@ -40,7 +40,7 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
         holder.classNameValue.setText(aClass.getClassName());
         holder.classCodeValue.setText(aClass.getClassCode());
         holder.classSubjectValue.setText(aClass.getClassSubject());
-        holder.classTeacherValue.setText(aClass.getClassTeacherID());
+        //holder.classTeacherValue.setText(aClass.getClassTeacherID());
         holder.classTeacherNameValue.setText(aClass.getClassTeacherName());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
         private final TextView classNameValue;
         private final TextView classCodeValue;
         private final TextView classSubjectValue;
-        private final TextView classTeacherValue;
+        //private final TextView classTeacherValue;
         private final TextView classTeacherNameValue;
 
         public ViewHolder(@NonNull View itemView) {
@@ -74,7 +74,7 @@ public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
             classNameValue = itemView.findViewById(R.id.classNameValue);
             classCodeValue = itemView.findViewById(R.id.classCodeValue);
             classSubjectValue = itemView.findViewById(R.id.classSubjectValue);
-            classTeacherValue = itemView.findViewById(R.id.classTeacherValue);
+            //classTeacherValue = itemView.findViewById(R.id.classTeacherValue);
             classTeacherNameValue = itemView.findViewById(R.id.classTeacherNameValue);
         }
     }

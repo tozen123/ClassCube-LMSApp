@@ -45,73 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Class Code: "
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/classCodeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:text="classCode"
-                android:textSize="24sp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Class Teacher: "
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/classTeacherNameValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="classTeacher"
-                android:textSize="24sp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Class Teacher ID: "
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/classTeacherValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="classTeacher"
-                android:textSize="14sp"/>
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,9 +60,84 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:text="classSubject"
-                android:textSize="24sp"/>
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class Code: "
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/classCodeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="47dp"
+                android:text="classCode"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class Teacher: "
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/classTeacherNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="31dp"
+                android:text="classTeacher"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <!---
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class Teacher ID: "
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/classTeacherValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="classTeacher"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+        -->
+
+
         
         
     </LinearLayout>
