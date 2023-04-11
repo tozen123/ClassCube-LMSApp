@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".post_creator"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/postCreator_postTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Module Post" />
+
+
+
+    <EditText
+        android:id="@+id/postCreator_PostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Post Title"
+        android:layout_below="@+id/postCreator_postTypeTitle"/>
+
+    <EditText
+        android:id="@+id/postCreator_PostSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="Post Subject"
+        android:layout_below="@+id/postCreator_PostTitle"/>
+
+    <EditText
+        android:id="@+id/postCreator_PostDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Post DueDate"
+        android:layout_below="@+id/postCreator_PostSubject"/>
+
+    <Button
+        android:id="@+id/postCreator_PostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

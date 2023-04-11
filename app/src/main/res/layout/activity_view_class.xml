@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".viewClass"
+    android:padding="22dp">
+
+
+    <TextView
+        android:id="@+id/txt_className_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ClassName"
+
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Code: "
+        android:layout_below="@+id/txt_className_value"/>
+
+    <TextView
+        android:id="@+id/txt_classCode_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="ClassCode"
+        android:layout_below="@+id/txt_className_value"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Subject:"
+        android:layout_below="@+id/txt_classCode_value"/>
+
+    <TextView
+        android:id="@+id/txt_classSubject_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="ClassSubject"
+        android:layout_below="@+id/txt_classCode_value"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Teacher: "
+        android:layout_below="@+id/txt_classSubject_value"/>
+
+    <TextView
+        android:id="@+id/txt_classTeacher_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="ClassTeacher"
+        android:layout_below="@+id/txt_classSubject_value"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/viewClassFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:src="@drawable/icon_add"
+        android:layout_margin="16dp"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/titleAct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_classTeacher_value"
+
+        android:layout_marginTop="40dp"
+        android:text="Class Works"
+
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/classDocsRecyclerView"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titleAct"
+        android:layout_marginTop="15dp"
+
+
+        android:layout_alignParentBottom="true"
+        />
+
+    <TextView
+        android:id="@+id/txtEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No activities in the class"
+        android:layout_centerInParent="true"
+        />
+
+    <Button
+        android:id="@+id/classInfoButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="80dp"
+        android:drawableLeft="@drawable/icon_info"
+        android:layout_toStartOf="@+id/refreshButtonViewClass"
+        />
+
+    <Button
+        android:id="@+id/refreshButtonViewClass"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="20dp"
+        android:drawableLeft="@drawable/btn_refresh"
+        />
+
+</RelativeLayout>
