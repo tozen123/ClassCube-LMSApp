@@ -7,7 +7,6 @@ public class Configs {
     public static String userName;
     public static String userType;
 
-
     protected Configs(){}
 
     public static synchronized Configs getInstance() {

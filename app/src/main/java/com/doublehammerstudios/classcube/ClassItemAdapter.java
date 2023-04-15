@@ -12,28 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class AdapterItem extends RecyclerView.Adapter<AdapterItem.ViewHolder> {
+public class ClassItemAdapter extends RecyclerView.Adapter<ClassItemAdapter.ViewHolder> {
     private ArrayList<Class> classArrayList;
     private Context context;
     private View.OnClickListener onClickListener;
-
-
-
     private ClassHandler listener;
-    public AdapterItem(ArrayList<Class> classArrayList, Context context, ClassHandler listener) {
+    public ClassItemAdapter(ArrayList<Class> classArrayList, Context context, ClassHandler listener) {
         this.classArrayList = classArrayList;
         this.context = context;
         this.listener = listener;
     }
     @NonNull
     @Override
-    public AdapterItem.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClassItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // passing our layout file for displaying our card item
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.class_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterItem.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClassItemAdapter.ViewHolder holder, int position) {
         // setting data to our text views from our modal class.
         Class aClass = classArrayList.get(position);
 
