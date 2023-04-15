@@ -4,30 +4,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".viewedClassActivity"
-    android:padding="20dp">
+    tools:context=".Activity.viewedClassActivity"
+    android:padding="20dp"
+
+    android:clipToPadding="false"
+    >
+
+    <LinearLayout
+        android:id="@+id/mainDataHolder"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:background="@drawable/background_data"
+        android:elevation="4dp"
+        android:padding="12dp"
+
+        >
+
+        <TextView
+            android:id="@+id/classPostTitle_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="classPostTitleValue"
+
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+
+            />
+
+        <TextView
+            android:id="@+id/classPostDueDate_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="classPostDueDateValue"
+            android:layout_below="@+id/classPostSubject_value"
+
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+            />
 
 
-    <TextView
-        android:id="@+id/classPostTitle_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="classPostTitleValue" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/classPostSubject_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="classPostSubjectValue"
-        android:layout_below="@+id/classPostTitle_value"
+
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/mainDataHolder"
         />
 
-    <TextView
-        android:id="@+id/classPostDueDate_value"
+    <LinearLayout
+        android:id="@+id/uploadedExtraData"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:background="@drawable/background_data"
+        android:elevation="4dp"
+        android:padding="12dp"
+
+
+        android:layout_below="@+id/classPostSubject_value"
+        android:layout_marginTop="26dp"
+        android:layout_centerHorizontal="true"
+        >
+        <Button
+            android:id="@+id/extraDataButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="File"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            android:layout_below="@+id/mainDataHolder"
+            />
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/deletePostButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="Delete Activity"
+        >
+
+    </Button>
+
+    <Switch
+        android:id="@+id/completedPostSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="classPostDueDateValue"
-        android:layout_below="@+id/classPostSubject_value"
-        />
+        android:text="Mark as Completed"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/uploadedExtraData"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
 
 </RelativeLayout>

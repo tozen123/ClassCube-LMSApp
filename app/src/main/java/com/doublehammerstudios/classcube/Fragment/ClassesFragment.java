@@ -1,4 +1,4 @@
-package com.doublehammerstudios.classcube;
+package com.doublehammerstudios.classcube.Fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -14,18 +14,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.Class;
+import com.doublehammerstudios.classcube.ClassHandler;
+import com.doublehammerstudios.classcube.ClassItemAdapter;
+import com.doublehammerstudios.classcube.Configs;
+import com.doublehammerstudios.classcube.R;
+import com.doublehammerstudios.classcube.viewClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,15 +40,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 
-public class ClassesFragment extends Fragment implements ClassHandler{
+public class ClassesFragment extends Fragment implements ClassHandler {
     Configs mConfigs;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -52,7 +52,7 @@ public class ClassesFragment extends Fragment implements ClassHandler{
 
     private RecyclerView classRecyclerView;
     private ArrayList<Class> classArrayList;
-    private AdapterItem classRecyclerViewAdapter;
+    private ClassItemAdapter classRecyclerViewAdapter;
     ProgressBar loadingPB;
 
     @Override
@@ -74,9 +74,9 @@ public class ClassesFragment extends Fragment implements ClassHandler{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mConfigs.userType.equals("Student")){
+                if(Configs.userType.equals("Student")){
                     showJoinClassDialogButtonClicked(view);
-                } else if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
+                } else if(Configs.userType.equals("Teacher/Instructor/Professor")){
                     showCreateClassDialogButtonClicked(view);
                 }
 
@@ -86,11 +86,10 @@ public class ClassesFragment extends Fragment implements ClassHandler{
         classArrayList = new ArrayList<>();
         classRecyclerView.setHasFixedSize(true);
         classRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        classRecyclerViewAdapter = new AdapterItem(classArrayList, getActivity(), this::onClassClicked);
-
+        classRecyclerViewAdapter = new ClassItemAdapter(classArrayList, getActivity(), this::onClassClicked);
         classRecyclerView.setAdapter(classRecyclerViewAdapter);
 
-        if(mConfigs.userType.equals("Student")) {
+        if(Configs.userType.equals("Student")) {
             studentViewClass();
         } else {
             teacherViewClass();
@@ -114,12 +113,9 @@ public class ClassesFragment extends Fragment implements ClassHandler{
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
                             for (DocumentSnapshot documentSnapshot : list) {
-                                if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
-                                    if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
-                                        Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
-                                        Class c = documentSnapshot.toObject(Class.class);
-                                        classArrayList.add(c);
-                                    }
+                                if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
+                                    Class c = documentSnapshot.toObject(Class.class);
+                                    classArrayList.add(c);
                                 }
                             }
                         } else {
@@ -148,17 +144,13 @@ public class ClassesFragment extends Fragment implements ClassHandler{
 
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
                             for (DocumentSnapshot documentSnapshot : list) {
-                                Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
-
                                 Class c = documentSnapshot.toObject(Class.class);
                                 classArrayList.add(c);
                             }
                         } else {
                             Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
                         }
-
                         classRecyclerViewAdapter.notifyDataSetChanged();
                         loadingPB.setVisibility(View.INVISIBLE);
                     }
@@ -222,7 +214,7 @@ public class ClassesFragment extends Fragment implements ClassHandler{
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Class Name: "+cc_className+" was not created! due to: " + e.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Class Name: "+cc_className+" was not created! due to: " + e, Toast.LENGTH_LONG).show();
                     }
                 });
     }

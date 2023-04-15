@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="125dp"
+    android:layout_height="125dp"
+    android:elevation="6dp"
+    app:cardCornerRadius="24dp"
+    android:padding="5dp"
+    android:layout_margin="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:padding="8dp"
+
+        >
+
+        <TextView
+            android:id="@+id/dashboardCardClassName"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ClassName"
+            android:textColor="@color/purple_500"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            >
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/dashboardCardSubjectName"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ClassSubject"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_below="@+id/dashboardCardClassName"
+            >
+        </TextView>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

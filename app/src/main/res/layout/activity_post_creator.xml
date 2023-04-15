@@ -4,14 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".post_creator"
-    android:padding="20dp">
+    tools:context=".Activity.postCreatorActivity"
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/postCreator_postTypeTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layoutHead"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Module Post" />
+        android:background="@drawable/background_data"
+
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/postCreator_postTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Module Post"
+
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+            />
+    </LinearLayout>
 
 
 
@@ -20,9 +34,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+
         android:inputType="textPersonName"
         android:hint="Post Title"
-        android:layout_below="@+id/postCreator_postTypeTitle"/>
+
+        android:layout_below="@+id/layoutHead"
+
+        android:layout_marginTop="18dp"
+        />
 
     <EditText
         android:id="@+id/postCreator_PostSubject"
@@ -31,16 +50,82 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:hint="Post Subject"
-        android:layout_below="@+id/postCreator_PostTitle"/>
 
-    <EditText
-        android:id="@+id/postCreator_PostDueDate"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/postCreator_PostTitle"
+
+        />
+
+    <Button
+        android:id="@+id/postCreator_PostDueDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+
+        android:hint="Select Date"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/postCreator_postDueDateText"
+        />
+
+    <TextView
+        android:id="@+id/postCreator_postDueDateTextHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Post DueDate"
-        android:layout_below="@+id/postCreator_PostSubject"/>
+        android:text="Due Date: "
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/postCreator_PostSubject"
+        />
+
+    <TextView
+        android:id="@+id/postCreator_postDueDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="NULL"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/postCreator_PostSubject"
+
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        />
+
+    <TextView
+        android:id="@+id/postCreator_postAddFilePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NULL"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/postCreator_PostDueDatePicker"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        />
+
+    <TextView
+        android:id="@+id/postCreator_postAddFileHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add File"
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/postCreator_PostDueDatePicker"
+
+
+
+        />
+
+    <ImageButton
+        android:id="@+id/postCreator_postAddFile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_add_file"
+
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/postCreator_postAddFileHeader"/>
 
     <Button
         android:id="@+id/postCreator_PostButton"
@@ -49,5 +134,4 @@
         android:text="Post"
         android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"/>
-
 </RelativeLayout>

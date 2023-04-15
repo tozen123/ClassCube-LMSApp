@@ -1,10 +1,12 @@
-package com.doublehammerstudios.classcube;
+package com.doublehammerstudios.classcube.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class TermsAndAgreement extends AppCompatActivity {
+import com.doublehammerstudios.classcube.R;
+
+public class TermsAndAgreementActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

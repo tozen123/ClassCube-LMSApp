@@ -17,8 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.Activity.postCreatorActivity;
+import com.doublehammerstudios.classcube.Activity.viewedClassActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,7 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class viewClass extends AppCompatActivity implements ClassPostAdapter.ItemClickListener{
+public class viewClass extends AppCompatActivity implements ClassPostItemAdapter.ItemClickListener{
     public Class CLASS_DATA;
     public String CLASS_DOC_ID;
     private TextView textView_className ,textView_classCode, textView_classSubject, textView_classTeacher;
@@ -53,7 +54,7 @@ public class viewClass extends AppCompatActivity implements ClassPostAdapter.Ite
 
     TextView mtxtEmpty;
     Button btnRefresh, btnClassInfo;
-    private ClassPostAdapter classPostAdapterRecyclerView;
+    private ClassPostItemAdapter classPostItemAdapterRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,25 +116,25 @@ public class viewClass extends AppCompatActivity implements ClassPostAdapter.Ite
                 });
 
         List<ClassPost> myObjects = new ArrayList<>();
-        ClassPostAdapter classPostAdapter = new ClassPostAdapter((ArrayList<ClassPost>) myObjects, viewClass.this);
-        classPostAdapter.setClickListener(viewClass.this);
+        ClassPostItemAdapter classPostItemAdapter = new ClassPostItemAdapter((ArrayList<ClassPost>) myObjects, viewClass.this);
+        classPostItemAdapter.setClickListener(viewClass.this);
 
         RecyclerView recyclerView = findViewById(R.id.classDocsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(viewClass.this));
 
-        recyclerView.setAdapter(classPostAdapter);
+        recyclerView.setAdapter(classPostItemAdapter);
         String TAG = "viewClass.javaData";
         firebaseFirestore.collection("class")
                 .whereEqualTo("classCode", CLASS_DATA.classCode)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
                         if (error != null) {
                             Log.w(TAG, "Listen failed.", error);
                             return;
                         }
 
-                        // Clear the existing data before adding new data
                         myObjects.clear();
 
                         if (!value.isEmpty()) {
@@ -143,15 +144,17 @@ public class viewClass extends AppCompatActivity implements ClassPostAdapter.Ite
                                     List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
                                     for (HashMap<String, String> map : objectList) {
                                         String value1 = map.get("classPostDuedate");
-                                        String value2 = map.get("classPostSubject");
-                                        String value3 = map.get("classPostTitle");
-                                        ClassPost myObject = new ClassPost(value3, value2, value1);
+                                        String value2 = map.get("classFileUrl");
+                                        String value3 = map.get("classPostSubject");
+                                        String value4 = map.get("classPostTitle");
+
+                                        ClassPost myObject = new ClassPost(value4, value3, value1, value2);
                                         myObjects.add(myObject);
                                     }
                                 }
                             }
                             // Notify the adapter that the data has changed
-                            classPostAdapter.notifyDataSetChanged();
+                            classPostItemAdapter.notifyDataSetChanged();
 
                             if(myObjects.size() == 0){
                                 mtxtEmpty.setVisibility(View.VISIBLE);
@@ -250,12 +253,14 @@ public class viewClass extends AppCompatActivity implements ClassPostAdapter.Ite
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(viewClass.this, viewedClassActivity.class);
 
-        intent.putExtra("CLASS_TITLE",  ClassPostAdapter.getItem(position).getClassPostTitle());
-        intent.putExtra("CLASS_SUBJECT",  ClassPostAdapter.getItem(position).getClassPostSubject());
-        intent.putExtra("CLASS_DUEDATE",  ClassPostAdapter.getItem(position).getClassPostDuedate());
+        intent.putExtra("CLASS_TITLE",  ClassPostItemAdapter.getItem(position).getClassPostTitle());
+        intent.putExtra("CLASS_SUBJECT",  ClassPostItemAdapter.getItem(position).getClassPostSubject());
+        intent.putExtra("CLASS_DUEDATE",  ClassPostItemAdapter.getItem(position).getClassPostDuedate());
+        intent.putExtra("CLASS_EXTRA_DATA",  ClassPostItemAdapter.getItem(position).getClassFileUrl());
+        intent.putExtra("CLASS_CODE",  CLASS_DATA.getClassCode());
 
         startActivity(intent);
-        Toast.makeText(this, "" + ClassPostAdapter.getItem(position).getClassPostTitle(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + ClassPostItemAdapter.getItem(position).getClassPostTitle(), Toast.LENGTH_SHORT).show();
     }
 
     public void showStudentList(List<String> stdList) {
@@ -303,7 +308,7 @@ public class viewClass extends AppCompatActivity implements ClassPostAdapter.Ite
     }
 
     public void createPost(){
-        Intent intent = new Intent(viewClass.this, post_creator.class);
+        Intent intent = new Intent(viewClass.this, postCreatorActivity.class);
         intent.putExtra("CLASS_CODE", class_data_str);
         startActivity(intent);
 

@@ -11,23 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ClassPostAdapter extends RecyclerView.Adapter<ClassPostAdapter.ViewHolder>{
+public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdapter.ViewHolder>{
     private static ArrayList<ClassPost> classPostArrayList;
     private Context context;
     private ItemClickListener mClickListener;
-    public ClassPostAdapter(ArrayList<ClassPost> classPostArrayList, Context context) {
+    public ClassPostItemAdapter(ArrayList<ClassPost> classPostArrayList, Context context) {
         this.classPostArrayList = classPostArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ClassPostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClassPostItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.class_post_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClassPostAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClassPostItemAdapter.ViewHolder holder, int position) {
         ClassPost classpost = classPostArrayList.get(position);
         holder.postTitle.setText(classpost.getClassPostTitle());
         holder.postSubject.setText(classpost.getClassPostSubject());
