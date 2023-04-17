@@ -37,7 +37,6 @@ public class ClassItemAdapter extends RecyclerView.Adapter<ClassItemAdapter.View
         holder.classNameValue.setText(aClass.getClassName());
         holder.classCodeValue.setText(aClass.getClassCode());
         holder.classSubjectValue.setText(aClass.getClassSubject());
-        //holder.classTeacherValue.setText(aClass.getClassTeacherID());
         holder.classTeacherNameValue.setText(aClass.getClassTeacherName());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -60,18 +59,16 @@ public class ClassItemAdapter extends RecyclerView.Adapter<ClassItemAdapter.View
         private final TextView classNameValue;
         private final TextView classCodeValue;
         private final TextView classSubjectValue;
-        //private final TextView classTeacherValue;
         private final TextView classTeacherNameValue;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             cardView = itemView.findViewById(R.id.classItemId);
-            // initializing our text views.
             classNameValue = itemView.findViewById(R.id.classNameValue);
             classCodeValue = itemView.findViewById(R.id.classCodeValue);
             classSubjectValue = itemView.findViewById(R.id.classSubjectValue);
-            //classTeacherValue = itemView.findViewById(R.id.classTeacherValue);
             classTeacherNameValue = itemView.findViewById(R.id.classTeacherNameValue);
         }
     }

@@ -62,7 +62,7 @@ public class postCreatorActivity extends AppCompatActivity {
     private static final int PICK_FILE_REQUEST_CODE = 1234;
     private Uri file_uri;
     private String fileUrl;
-
+    private String _postStatus = "Incomplete";
     StorageReference storageReference;
     DatabaseReference databaseReference;
     @Override
@@ -104,25 +104,24 @@ public class postCreatorActivity extends AppCompatActivity {
                 } else if(subject.isEmpty()){
                     Toast.makeText(postCreatorActivity.this, "Error: title subject must not be empty!", Toast.LENGTH_SHORT).show();
                 } else {
-                    /*
 
-                    --------------------------------------------------------------------------------
-                    FIX BUG WHERE THE POST CRASH WHEN THERE IS NO UPLOADED FILE
-                    --------------------------------------------------------------------------------
-
-                     */
-                    uploadFileToFirestore(file_uri, new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String fileUrl = uri.toString();
-                            ClassPost post = new ClassPost(title, subject, dateOutput, fileUrl);
-                            createClassPost(post);
-                        }
-
-                    });
+                    if(file_uri == null){
+                        ClassPost post = new ClassPost(title, subject, dateOutput, fileUrl, _postStatus, null);
+                        createClassPost(post);
+                    } else {
+                        uploadFileToFirestore(file_uri, new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String fileUrl = uri.toString();
+                                ClassPost post = new ClassPost(title, subject, dateOutput, fileUrl, _postStatus, null);
+                                createClassPost(post);
+                            }
+                        });
+                    }
                 }
             }
         });
+
         button_Post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -43,6 +43,16 @@
             android:text="classPostDuedate"
             android:textColor="@color/black" />
 
+        <TextView
+            android:id="@+id/id_textview_classPostStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            android:text="%completionStatus%"
+            android:textColor="@color/black" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

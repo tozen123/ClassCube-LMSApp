@@ -1,5 +1,6 @@
 package com.doublehammerstudios.classcube.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,16 +111,27 @@ public class DashboardFragment extends Fragment{
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
                             for (DocumentSnapshot documentSnapshot : list) {
-                                if(mConfigs.userType.equals("Teacher/Instructor/Professor")){
+                                if(Configs.userType.equals("Teacher/Instructor/Professor")){
                                     if(Objects.equals(documentSnapshot.getString("classTeacherID"), userId)){
                                         Log.d("SUPERTAGGER5 ", "6CHECK - "+documentSnapshot.toString());
                                         Class c = documentSnapshot.toObject(Class.class);
                                         classArrayList.add(c);
                                     }
+                                } else if(Configs.userType.equals("Student")) {
+                                    ArrayList<String> cStudents = (ArrayList<String>) documentSnapshot.get("classStudents");
+
+                                    if (cStudents != null && cStudents.contains(userId)) {
+                                        Class c = documentSnapshot.toObject(Class.class);
+                                        classArrayList.add(c);
+                                    }
+
+
+                                } else {
+                                    return;
                                 }
                             }
                         } else {
-                            Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
                         }
 
                         mDashboardClassItemAdapter.notifyDataSetChanged();
