@@ -33,6 +33,9 @@ public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdap
         holder.postSubject.setText(classpost.getClassPostSubject());
         holder.postDueDate.setText(classpost.getClassPostDuedate());
 
+
+        holder.postCompletionStatus.setText(classpost.getPostStatus());
+
     }
 
     public void updateList (ArrayList<ClassPost> items) {
@@ -54,6 +57,7 @@ public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdap
         private final TextView postTitle;
         private final TextView postSubject;
         private final TextView postDueDate;
+        private final TextView postCompletionStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +65,13 @@ public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdap
             postTitle = itemView.findViewById(R.id.id_textview_classPostTitle);
             postSubject = itemView.findViewById(R.id.id_textview_classPostSubject);
             postDueDate = itemView.findViewById(R.id.id_textview_classPostDuedate);
+            postCompletionStatus = itemView.findViewById(R.id.id_textview_classPostStatus);
+
+            if(Configs.userType.equals("Teacher/Instructor/Professor")){
+                postCompletionStatus.setVisibility(View.INVISIBLE);
+            }else if(Configs.userType.equals("Student")){
+                postCompletionStatus.setVisibility(View.VISIBLE);
+            }
 
             itemView.setOnClickListener(this);
         }

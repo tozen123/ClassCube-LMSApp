@@ -1,10 +1,11 @@
 package com.doublehammerstudios.classcube;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_view_class_info);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -109,21 +111,23 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
 
                                         documentReference.delete()
                                                 .addOnSuccessListener(aVoid -> {
-                                                    createAlertDialog("Class Deleted", "Class has been successfully deleted!");
+                                                    runOnUiThread(() -> {
+                                                        createAlertDialog(viewClassInfo.this, "Class Deleted", "Class has been successfully deleted!");
+                                                    });
                                                 })
                                                 .addOnFailureListener(e -> {
-                                                    createAlertDialog("Firestore Failure Listener", "Error:  Failed to delete data from the database");
+                                                    runOnUiThread(() -> {
+                                                        createAlertDialog(viewClassInfo.this, "Firestore Failure Listener", "Error:  Failed to delete data from the database");
+                                                    });
                                                 });
                                     }
                                 }
 
                             }
-                        })
-                        .addOnFailureListener(e -> {
-                            createAlertDialog("Firestore Failure Listener", "Error:  Failed to fetch data from the database");
                         });
             }
         });
+
 
         btnLeaveClass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,10 +147,10 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
                                 }
                                 Toast.makeText(viewClassInfo.this, "You have successfully leave the class: "+mClassCode, Toast.LENGTH_SHORT).show();
                                 finish();
+                                Intent i=new Intent(viewClassInfo.this, MainActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
                             }
-                        })
-                        .addOnFailureListener(e -> {
-                            createAlertDialog("Firestore Failure Listener", "Error:  Failed to fetch data from the database");
                         });
             }
         });
@@ -171,9 +175,9 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
         Toast.makeText(this, "This is " + adapter.getItem(position) + " a very bright one! ", Toast.LENGTH_SHORT).show();
     }
 
-    public void createAlertDialog(String title, String message)
+    public void createAlertDialog(Context context, String title, String message)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(viewClassInfo.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(""+title);
         builder.setMessage(""+message)
                 .setPositiveButton("Close", new DialogInterface.OnClickListener() {

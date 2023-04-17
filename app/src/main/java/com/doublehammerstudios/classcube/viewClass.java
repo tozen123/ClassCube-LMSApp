@@ -143,12 +143,19 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                                 if (documentSnapshot.contains("classActivities")) {
                                     List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
                                     for (HashMap<String, String> map : objectList) {
+
                                         String value1 = map.get("classPostDuedate");
                                         String value2 = map.get("classFileUrl");
                                         String value3 = map.get("classPostSubject");
                                         String value4 = map.get("classPostTitle");
+                                        String value5 = map.get("postStatus");
 
-                                        ClassPost myObject = new ClassPost(value4, value3, value1, value2);
+
+                                        if(value1 == null){
+                                            value1 = "No Schedule";
+                                        }
+
+                                        ClassPost myObject = new ClassPost(value4, value3, value1, value2, value5, null);
                                         myObjects.add(myObject);
                                     }
                                 }
@@ -257,7 +264,11 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
         intent.putExtra("CLASS_SUBJECT",  ClassPostItemAdapter.getItem(position).getClassPostSubject());
         intent.putExtra("CLASS_DUEDATE",  ClassPostItemAdapter.getItem(position).getClassPostDuedate());
         intent.putExtra("CLASS_EXTRA_DATA",  ClassPostItemAdapter.getItem(position).getClassFileUrl());
+        intent.putExtra("CLASS_POST_COMPLETION_STATUS",  ClassPostItemAdapter.getItem(position).getPostStatus());
+        intent.putExtra("CLASS_POST_STUDENTWHOFINISHED",  ClassPostItemAdapter.getItem(position).getstudentWhoFinishedClassPost());
+
         intent.putExtra("CLASS_CODE",  CLASS_DATA.getClassCode());
+
 
         startActivity(intent);
         Toast.makeText(this, "" + ClassPostItemAdapter.getItem(position).getClassPostTitle(), Toast.LENGTH_SHORT).show();

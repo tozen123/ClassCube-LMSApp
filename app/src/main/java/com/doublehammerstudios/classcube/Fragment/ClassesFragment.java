@@ -148,9 +148,8 @@ public class ClassesFragment extends Fragment implements ClassHandler {
                                 Class c = documentSnapshot.toObject(Class.class);
                                 classArrayList.add(c);
                             }
-                        } else {
-                            Toast.makeText(getActivity(), "No data found in Database", Toast.LENGTH_SHORT).show();
                         }
+
                         classRecyclerViewAdapter.notifyDataSetChanged();
                         loadingPB.setVisibility(View.INVISIBLE);
                     }
