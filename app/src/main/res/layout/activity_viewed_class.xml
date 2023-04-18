@@ -81,10 +81,44 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:background="@android:color/transparent"
-            android:layout_below="@+id/mainDataHolder"
             />
     </LinearLayout>
-    
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_data"
+        android:elevation="4dp"
+        android:padding="12dp"
+
+        android:id="@+id/submissionDataLayout"
+
+        android:layout_below="@+id/classPostSubject_value"
+        android:layout_marginTop="26dp"
+        android:layout_centerHorizontal="true"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="%UPLOADED_DATA_URL%"
+            >
+
+        </TextView>
+
+        <Button
+            android:id="@+id/uploadFileData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Upload File"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="@android:color/transparent"
+            />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/deletePostButton"
         android:layout_width="150dp"
@@ -96,13 +130,26 @@
 
     </Button>
 
+    <TextView
+        android:id="@+id/classPost_Stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="%USER_COMPLETION_STATUS_POST%"
+        android:textStyle="bold"
+
+        android:layout_marginTop="96dp"
+        android:layout_below="@+id/uploadedExtraData"
+
+        />
+
     <Switch
         android:id="@+id/completedPostSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mark as Completed"
-        android:layout_marginTop="24dp"
-        android:layout_below="@+id/uploadedExtraData"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/classPost_Stats"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 

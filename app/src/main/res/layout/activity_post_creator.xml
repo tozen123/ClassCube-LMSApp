@@ -91,41 +91,46 @@
         android:textStyle="bold"
         android:textColor="@color/purple_500"
         />
-
-    <TextView
-        android:id="@+id/postCreator_postAddFilePath"
+    <LinearLayout
+        android:id="@+id/extraDataLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NULL"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="18dp"
-        android:textSize="16sp"
         android:layout_below="@+id/postCreator_PostDueDatePicker"
-        android:textStyle="bold"
-        android:textColor="@color/purple_500"
-        />
-
-    <TextView
-        android:id="@+id/postCreator_postAddFileHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add File"
-        android:layout_marginTop="18dp"
-        android:textSize="16sp"
-        android:layout_below="@+id/postCreator_PostDueDatePicker"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        >
 
 
+        <TextView
+            android:id="@+id/postCreator_postAddFileHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add File"
+            android:textSize="16sp"
+            android:layout_marginTop="28dp"
+            />
 
-        />
+        <ImageButton
+            android:id="@+id/postCreator_postAddFile"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_add_file"
 
-    <ImageButton
-        android:id="@+id/postCreator_postAddFile"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_add_file"
+            android:layout_marginTop="5dp"
+            />
+        <TextView
+            android:id="@+id/postCreator_postAddFilePath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NULL"
+            android:textSize="16sp"
 
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/postCreator_postAddFileHeader"/>
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+
+            />
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/postCreator_PostButton"
