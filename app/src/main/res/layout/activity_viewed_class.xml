@@ -60,8 +60,8 @@
 
     <LinearLayout
         android:id="@+id/uploadedExtraData"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
         android:orientation="vertical"
         android:background="@drawable/background_data"
         android:elevation="4dp"
@@ -98,13 +98,6 @@
         android:layout_marginTop="26dp"
         android:layout_centerHorizontal="true"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="%UPLOADED_DATA_URL%"
-            >
-
-        </TextView>
 
         <Button
             android:id="@+id/uploadFileData"

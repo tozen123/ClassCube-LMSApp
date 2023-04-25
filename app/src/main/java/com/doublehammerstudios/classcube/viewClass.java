@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doublehammerstudios.classcube.Activity.postCreatorActivity;
+import com.doublehammerstudios.classcube.Activity.postQuizCreatorActivity;
 import com.doublehammerstudios.classcube.Activity.viewedClassActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -251,16 +252,17 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                             }
 
                             List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
-                            Object students = null;
-                            boolean completed = false;
-                            String value1 = null;
-                            String value2 = null;
-                            String value3 = null;
-                            String value4 = null;
-                            String value5 = null;
-                            String value6 = null;
 
                             for (HashMap<String, String> map : objectList) {
+                                Object students = null;
+                                boolean completed = false;
+                                String value1 = null;
+                                String value2 = null;
+                                String value3 = null;
+                                String value4 = null;
+                                String value5 = null;
+                                String value6 = null;
+
                                 if(map.containsKey("classFileUrl")){
                                     value1 = map.get("classPostDuedate");
                                     value2 = map.get("classFileUrl");
@@ -272,7 +274,10 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                                     }
 
                                     students = map.get("studentWhoFinishedClassPost");
-                                } else if(map.containsKey("classActivityPostSubmissionBinLink")){
+
+                                }
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                        Log.d("asdasdasdasd", "IM HERE");
                                         value1 = map.get("classActivityPostDueDate");
                                         value2 = map.get("classActivityPostStatus");
                                         value3 = map.get("classActivityPostSubject");
@@ -284,8 +289,6 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                                         }
 
                                         students = map.get("studentWhoFinishedClassActivityPost");
-                                } else {
-                                    return;
                                 }
 
                                 if (students instanceof String) {
@@ -307,8 +310,11 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                                 if(map.containsKey("classFileUrl")){
                                     ClassPost newClassPost = new ClassPost(value4, value3, value1, value2, value6, null);
                                     classPosts.add(newClassPost);
-                                } else if(map.containsKey("classActivityPostSubmissionBinLink")){
-                                    ClassActivityPost newClassActivityPost = new ClassActivityPost(value5, value3, value1,value2, value4, null);
+                                }
+
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                    Log.d("asdasdasdasd", "IM HERE I UPDATED THE STATUS");
+                                    ClassActivityPost newClassActivityPost = new ClassActivityPost(value5, value3, value1, value6, value4, null);
                                     classActivityPosts.add(newClassActivityPost);
                                 }
 
@@ -428,6 +434,10 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
     }
 
     public void createQuizPost(){
+        Intent intent = new Intent(viewClass.this, postQuizCreatorActivity.class);
+        intent.putExtra("CLASS_CODE", class_data_str);
+
+        startActivity(intent);
         Toast.makeText(viewClass.this, "createActivityPost()", Toast.LENGTH_SHORT).show();
     }
 }

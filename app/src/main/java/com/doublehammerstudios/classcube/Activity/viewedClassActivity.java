@@ -18,8 +18,10 @@ import android.widget.Toast;
 
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,7 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ public class viewedClassActivity extends AppCompatActivity {
     String CLASS_POST_TYPE;
 
     TextView textView_title, textView_subject, textView_duedate, textView_completionStats;
-    Button btn_extraData, btn_deletePost;
+    Button btn_extraData, btn_deletePost, btn_uploadFile;
 
     Switch sw_markAsCompleted;
     private String url;
@@ -56,7 +60,16 @@ public class viewedClassActivity extends AppCompatActivity {
     LinearLayout submissionDataLayout;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    FirebaseStorage storage;
     String userId;
+
+    /*
+
+        Summary
+        This code handles the viewed class post, Module Post and Activity Post.
+
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,6 +79,7 @@ public class viewedClassActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
+        storage = FirebaseStorage.getInstance();
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -90,6 +104,7 @@ public class viewedClassActivity extends AppCompatActivity {
         submissionDataLayout = findViewById(R.id.submissionDataLayout);
         btn_extraData = findViewById(R.id.extraDataButton);
         btn_deletePost = findViewById(R.id.deletePostButton);
+        btn_uploadFile = findViewById(R.id.uploadFileData);
 
         sw_markAsCompleted = findViewById(R.id.completedPostSwitch);
 
@@ -126,11 +141,17 @@ public class viewedClassActivity extends AppCompatActivity {
                 sw_markAsCompleted.setVisibility(View.INVISIBLE);
             }
 
-
         btn_extraData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openExtraData();
+            }
+        });
+
+        btn_uploadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadOutputData();
             }
         });
 
@@ -211,7 +232,10 @@ public class viewedClassActivity extends AppCompatActivity {
                                                                 .addOnFailureListener(e -> {
                                                                     progressDialog.dismiss();
                                                                     finish();
-                                                                    // AYAW MADELETE NAKAK URAT
+                                                                    /* TO FIX DELETE FEATURERE
+                                                                        PROBLEM:
+                                                                                 AYAW MADELETE NAKAKA URAT TALAGA
+                                                                     */
                                                                 });
                                                     }
                                                 })
@@ -221,8 +245,6 @@ public class viewedClassActivity extends AppCompatActivity {
                                                         Toast.makeText(viewedClassActivity.this, "Failed to Delete "+classNameSaved, Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
-
-
                                     }
 
                                 }
@@ -236,7 +258,7 @@ public class viewedClassActivity extends AppCompatActivity {
         });
 
         checkTheUserAccomplishment();
-        String TAG = "sw_markAsCompleted_1";
+        String TAG = "sw_markAsCompleted_1"; // FOR LOGGING DATA MUST BE DELETED AT ALL COST
         sw_markAsCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -267,6 +289,10 @@ public class viewedClassActivity extends AppCompatActivity {
                                         }
 
                                         for (Map<String, Object> map : classActivities) {
+                                            /*
+                                                Handles Module Posting
+                                                Uses the classFileURL as the unique variable
+                                             */
                                             if(map.containsKey("classFileUrl")){
                                                 if(map.get("classPostTitle").toString().equals(POST_TITLE)){
                                                     List<String> students = (List<String>) map.get("studentWhoFinishedClassPost");
@@ -287,6 +313,31 @@ public class viewedClassActivity extends AppCompatActivity {
                                                     map.put("studentWhoFinishedClassPost", students);
                                                 }
                                             }
+                                            /*
+                                                Activity Module Posting
+                                                Uses the classActivityPostSubmissionBinLink as the unique variable
+                                            */
+                                            if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                                if(map.get("classActivityPostTitle").toString().equals(POST_TITLE)){
+                                                    List<String> students = (List<String>) map.get("studentWhoFinishedClassActivityPost");
+
+                                                    Log.d(TAG, "classActivityPostTitle: "+map.get("classActivityPostTitle"));
+                                                    Log.d(TAG, "studentWhoFinishedClassActivityPost: "+map.get("studentWhoFinishedClassActivityPost"));
+
+                                                    if (students == null) {
+                                                        students = new ArrayList<>();
+                                                    }
+
+                                                    if(students.contains(userId)){
+                                                        // This user already completed the post and will not add his name in the database
+                                                        return;
+                                                    }
+
+                                                    students.add(userId);
+                                                    map.put("studentWhoFinishedClassActivityPost", students);
+                                                }
+                                            }
+
                                         }
                                         updateStorage(documentSnapshot, classActivities);
                                         checkTheUserAccomplishment();
@@ -332,7 +383,10 @@ public class viewedClassActivity extends AppCompatActivity {
                             }
 
                             for (Map<String, Object> map : classActivities) {
-                                // classFileUrl is the unique parameter of classPost
+                                /*
+                                                Handles Module Posting
+                                                Uses the classFileURL as the unique variable
+                                */
                                 if(map.containsKey("classFileUrl")){
                                     if(map.get("classPostTitle").toString().equals(POST_TITLE)){
                                         List<String> students = (List<String>) map.get("studentWhoFinishedClassPost");
@@ -350,6 +404,28 @@ public class viewedClassActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
+                                /*
+                                                Activity Module Posting
+                                                Uses the classActivityPostSubmissionBinLink as the unique variable
+                                */
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                    if(map.get("classActivityPostTitle").toString().equals(POST_TITLE)){
+                                        List<String> students = (List<String>) map.get("studentWhoFinishedClassActivityPost");
+
+                                        if (students == null) {
+                                            students = new ArrayList<>();
+                                        }
+
+                                        if(students.contains(userId)){
+                                            textView_completionStats.setText("You already completed this activity!");
+
+                                            sw_markAsCompleted.setChecked(true);
+                                        } else {
+                                            textView_completionStats.setText("You still not completed this activity!");
+                                        }
+                                    }
+                                }
+
                             }
 
                             updateStorage(documentSnapshot, classActivities);
@@ -362,6 +438,10 @@ public class viewedClassActivity extends AppCompatActivity {
                     }
                 });
     }
+    /*
+            Summary
+            Function to update the firebase database of the changes in the class post
+     */
     public void updateStorage(@NonNull DocumentSnapshot documentSnapshot, List<Map<String, Object>> classActivity){
         // Update the modified classActivity list back to Firestore
         firebaseFirestore.collection("class").document(documentSnapshot.getId())
@@ -406,7 +486,10 @@ public class viewedClassActivity extends AppCompatActivity {
                             }
 
                             for (Map<String, Object> map : classActivity) {
-                                // classFileUrl is the unique parameter of classPost
+                                /*
+                                                Handles Module Posting
+                                                Uses the classFileURL as the unique variable
+                                */
                                 if(map.containsKey("classFileUrl")){
                                     if(map.get("classPostTitle").toString().equals(POST_TITLE)){
                                         List<String> students = (List<String>) map.get("studentWhoFinishedClassPost");
@@ -422,7 +505,25 @@ public class viewedClassActivity extends AppCompatActivity {
                                         map.put("studentWhoFinishedClassPost", students);
                                     }
                                 }
+                                 /*
+                                                Activity Module Posting
+                                                Uses the classActivityPostSubmissionBinLink as the unique variable
+                                */
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                    if(map.get("classActivityPostTitle").toString().equals(POST_TITLE)){
+                                        List<String> students = (List<String>) map.get("studentWhoFinishedClassActivityPost");
 
+                                        if (students == null) {
+                                            return;
+                                        }
+
+                                        if(students.contains(userId)){
+                                            students.remove(userId);
+                                        }
+
+                                        map.put("studentWhoFinishedClassActivityPost", students);
+                                    }
+                                }
                             }
 
                             updateStorage(documentSnapshot, classActivity);
@@ -432,6 +533,10 @@ public class viewedClassActivity extends AppCompatActivity {
                 });
     }
 
+    /*
+            Summary
+            Function to change the button based on the retrieved data
+    */
 
     public void changeButtonName(){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -441,6 +546,11 @@ public class viewedClassActivity extends AppCompatActivity {
         btn_extraData.setText(String.format("File: %s", fileRef.getName()));
     }
 
+    /*
+        Summary
+        Function to set the text of major textView elements
+    */
+
     public void setAllMainText()
     {
         textView_title.setText(POST_TITLE);
@@ -448,12 +558,57 @@ public class viewedClassActivity extends AppCompatActivity {
         textView_duedate.setText(POST_DUEDATE);
     }
 
+    /*
+        Summary
+        Function to start implicit intent to open the URI data
+    */
     public void openExtraData(){
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+    public final int PICK_FILE_REQUEST = 1;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading File....");
+        progressDialog.show();
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri fileUri = data.getData();
+
+            StorageReference storageRef = storage.getReference().child(CLASS_ACTIVITY_BIN+"/" + "OUTPUT:"+POST_TITLE+"_USER:"+userId);
+            UploadTask uploadTask = storageRef.putFile(fileUri);
+
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    progressDialog.dismiss();
+                    Toast.makeText(viewedClassActivity.this, "You have successfully uploaded your file!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Uploaded: "+(int)progress+"%");
+                }
+            });
+        }
+    }
+
+    /*
+        Summary
+        Function to upload the file that the user student uploaded
+     */
+    public void uploadOutputData(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*"); // You can set the file type here. For example, "image/*" for images or "application/pdf" for PDFs.
+        startActivityForResult(Intent.createChooser(intent, "Select a File"), PICK_FILE_REQUEST);
     }
 
 }

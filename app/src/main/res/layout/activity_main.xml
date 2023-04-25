@@ -19,11 +19,13 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_height="65dp"
             android:id="@+id/toolbar"
-            android:elevation="4dp"
+            android:elevation="7dp"
             android:minHeight="80dp"
-            android:background="@color/purple_500"/>
+            android:background="@drawable/toolbar_design"
+            app:titleTextColor="#faad2e"
+            />
         
         <FrameLayout
             android:layout_width="match_parent"

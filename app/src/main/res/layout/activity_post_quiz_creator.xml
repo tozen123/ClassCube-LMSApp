@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.postQuizCreatorActivity"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/layoutHead"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_data"
+
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/postQuizCreator_postTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz Post"
+
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/layoutHead"
+
+        >
+        <Button
+            android:id="@+id/vbtn_addQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Question"
+            >
+        </Button>
+    </LinearLayout>
+    <!--
+        Input for main details of the post
+    -->
+    <EditText
+        android:id="@+id/postQuizCreator_PostTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+
+        android:inputType="textPersonName"
+        android:hint="Post Title"
+
+        android:layout_below="@+id/layoutControls"
+
+        android:layout_marginTop="18dp"
+        />
+
+    <EditText
+        android:id="@+id/postQuizCreator_PostSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="Post Subject"
+
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/postQuizCreator_PostTitle"
+
+        />
+
+    <Button
+        android:id="@+id/postQuizCreator_PostDueDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+
+        android:hint="Select Date"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/postQuizCreator_postDueDateText"
+        />
+
+    <TextView
+        android:id="@+id/postQuizCreator_postDueDateTextHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due Date: "
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/postQuizCreator_PostSubject"
+        />
+
+    <TextView
+        android:id="@+id/postQuizCreator_postDueDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="NULL"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/postQuizCreator_PostSubject"
+
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        />
+
+    <!--
+            End
+      -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/questionsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/vBtn_PostQuiz"
+        android:layout_below="@+id/postQuizCreator_PostDueDatePicker"
+        android:layout_marginTop="10dp"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/vBtn_PostQuiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post"
+        android:layout_alignParentBottom="true"
+        >
+    </Button>
+</RelativeLayout>

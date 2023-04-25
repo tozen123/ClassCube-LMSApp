@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/nav_dashboard"
-            android:title="Dashboard"
+            android:title="Home"
             >
         </item>
 
@@ -22,7 +22,12 @@
             >
         </item>
 
-
+        <item
+            android:id="@+id/nav_records"
+            android:icon="@drawable/ic_class_record"
+            android:title="Class Record"
+            >
+        </item>
 
     </group>
 
