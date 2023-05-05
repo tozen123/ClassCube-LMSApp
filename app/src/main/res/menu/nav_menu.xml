@@ -49,8 +49,6 @@
                 android:id="@+id/nav_logout"
                 >
             </item>
-
         </menu>
     </item>
-
 </menu>

@@ -14,14 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.doublehammerstudios.classcube.Class;
 import com.doublehammerstudios.classcube.Fragment.ClassesFragment;
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.Fragment.DashboardFragment;
+import com.doublehammerstudios.classcube.Fragment.StudentClassActivityRecordsFragment;
 import com.doublehammerstudios.classcube.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +30,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,9 +70,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                 navUsername.setText(name);
                 navType.setText(typeUser);
+
+                checkUserForNavFeatures();
             }
         });
-        checkUserForNavFeatures();
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,20 +97,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
     public void checkUserForNavFeatures(){
         Menu navMenu = navigationView.getMenu();
-        if(Configs.userType == null) {
-            return;
-        }
-
         if(Configs.userType.equals("Teacher/Instructor/Professor")){
-            navMenu.findItem(R.id.nav_records).setVisible(false);
-        } else if(Configs.userType.equals("Student")) {
             navMenu.findItem(R.id.nav_records).setVisible(true);
+        } else if(Configs.userType.equals("Student")) {
+            navMenu.findItem(R.id.nav_records).setVisible(false);
         } else{
             return;
         }
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case R.id.nav_dashboard:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
@@ -119,11 +116,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ClassesFragment()).commit();
                 break;
             case R.id.nav_settings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_records:
-                Toast.makeText(MainActivity.this, "This feature is under construction!", Toast.LENGTH_SHORT);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentClassActivityRecordsFragment()).commit();
                 break;
             case R.id.nav_logout:
                 userLogout();

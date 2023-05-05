@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.ClassActivityPost;
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -91,6 +93,10 @@ public class viewedClassActivity extends AppCompatActivity {
             CLASS_EXTRA_DATA = (String) bundle.get("CLASS_EXTRA_DATA");
             CLASS_ACTIVITY_BIN = (String) bundle.get("CLASS_ACTIVITY_BIN");
             CLASS_CODE = (String) bundle.get("CLASS_CODE");
+
+            // This function is used to fix the class code bug at to do
+            //bugFix_classCodeFixer();
+
             POST_COMPLETION_STATUS = (String) bundle.get("CLASS_POST_COMPLETION_STATUS");
             CLASS_POST_TYPE = (String) bundle.get("CLASS_POST_TYPE");
             CLASS_POST_STUDENTWHOFINISHED = (ArrayList<String>) bundle.get("CLASS_POST_STUDENTWHOFINISHED");
@@ -354,7 +360,59 @@ public class viewedClassActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
+    /*
+    public void bugFix_classCodeFixer(){
+
+        firebaseFirestore.collection("class")
+                .whereArrayContains("classStudents", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(!task.isSuccessful()){
+                            // Error FIREBASE
+                        }
+
+                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                        for (DocumentSnapshot document : documents) {
+                            List<Map<String, Object>> classActivitiesList = (List<Map<String, Object>>) document.get("classActivities");
+                            if (classActivitiesList != null) {
+                                for (Map<String, Object> classActivity : classActivitiesList) {
+                                    if(classActivity.containsKey("classActivityPostSubmissionBinLink")){
+                                        String submissionBinLink = classActivity.get("classActivityPostSubmissionBinLink").toString();
+                                        if(!submissionBinLink.equals(CLASS_ACTIVITY_BIN)){
+                                            return;
+                                        }
+                                        DocumentReference matchedDocRef = document.getReference();
+                                        matchedDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (!task.isSuccessful()) {
+                                                    // Error FIREBASE
+                                                }
+                                                DocumentSnapshot matchedDocSnapshot = task.getResult();
+                                                if (matchedDocSnapshot != null && matchedDocSnapshot.exists()) {
+
+                                                    String classCode = matchedDocSnapshot.getString("classCode");
+                                                    if (classCode == null) {
+                                                        return;
+                                                    }
+
+                                                    CLASS_CODE = classCode;
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+    */
 
     public void checkTheUserAccomplishment(){
         firebaseFirestore.collection("class")

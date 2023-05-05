@@ -7,14 +7,12 @@
 
     >
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         >
-
-
-
         <TextView
             android:id="@+id/helloUser"
             android:layout_width="wrap_content"
@@ -45,7 +43,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
 
-            android:layout_height="185dp"
+            android:layout_height="210dp"
             android:layout_below="@+id/helloUser"
             android:background="@drawable/placeholder_data"
             android:elevation="6dp"
@@ -81,9 +79,13 @@
                 android:textColor="#faad2e"
                 />
 
-
-
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayoutData1"
+            >
+
 
         <TextView
             android:id="@+id/ClassStatsHeader"
@@ -95,7 +97,7 @@
             android:textColor="#faad2e"
             android:layout_marginTop="18dp"
             android:layout_marginStart="15dp"
-            android:layout_below="@+id/linearLayoutData1"
+
             />
 
         <LinearLayout
@@ -103,12 +105,14 @@
             android:layout_width="match_parent"
             android:layout_height="140dp"
 
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/ClassStatsHeader"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+
+
             android:weightSum="1"
+
+
             >
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -116,12 +120,14 @@
                 android:layout_weight="0.7"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
+
+
                 >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginStart="15dp"
 
                     android:text="Joined Class"
                     >
@@ -147,10 +153,12 @@
                 android:layout_weight="0.3"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
+
                 >
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
 
 
                     android:text="Incomplete Activities"
@@ -165,6 +173,7 @@
                     android:textSize="68sp"
                     android:text="0"
                     android:textStyle="bold"
+
 
                     android:layout_marginTop="9dp"
                     >
@@ -190,23 +199,41 @@
         <LinearLayout
             android:id="@+id/todoData1"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="match_parent"
 
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/ToDoHeader"
             android:orientation="horizontal"
+
+            android:layout_marginBottom="18dp"
             >
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
+
+                android:id="@+id/todoRecyclerView"
                 >
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
-
     </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/filler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayoutData1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#faad2e"
+                android:layout_marginTop="24dp"
+                >
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

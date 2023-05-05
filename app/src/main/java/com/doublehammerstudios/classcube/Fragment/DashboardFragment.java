@@ -16,10 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.Activity.viewedClassActivity;
 import com.doublehammerstudios.classcube.Class;
+import com.doublehammerstudios.classcube.ClassActivityPost;
+import com.doublehammerstudios.classcube.ClassActivityPostItemAdapter;
+import com.doublehammerstudios.classcube.ClassPost;
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.R;
 import com.doublehammerstudios.classcube.viewClass;
@@ -46,15 +51,18 @@ public class DashboardFragment extends Fragment{
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     String userId;
-    TextView tv_userName, tv_classStatsHeader, tv_joinedClassValue, tv_incompleteActivitesValue;
+    TextView tv_userName, tv_classStatsHeader, tv_joinedClassValue, tv_incompleteActivitesValue, todoHeader;
     Configs mConfigs;
-    RecyclerView dashboardClassItemRecyclerView;
+    RecyclerView dashboardClassItemRecyclerView, todoRecyclerView;
     ArrayList<Class> classArrayList;
+    ArrayList<ClassActivityPost> todoArrayList;
     LinearLayoutManager linearLayoutManager;
     dashboardClassItemAdapter mDashboardClassItemAdapter;
 
+    todoClassItemAdapter mTodoClassItemAdapter;
     LinearLayout statsData1Layout;
     int joinedCount;
+    RelativeLayout filler;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
@@ -69,6 +77,9 @@ public class DashboardFragment extends Fragment{
 
         tv_joinedClassValue = view.findViewById(R.id.joinedClassValue);
         tv_incompleteActivitesValue = view.findViewById(R.id.incompleteActivitesValue);
+
+        todoHeader = view.findViewById(R.id.ToDoHeader);
+        filler = view.findViewById(R.id.filler);
 
         dashboardData1(view);
 
@@ -90,11 +101,16 @@ public class DashboardFragment extends Fragment{
 
                 if (typeUser.equals("Student")) {
                     statsData1Layout.setVisibility(View.VISIBLE);
+                    todoHeader.setVisibility(View.VISIBLE);
                     tv_classStatsHeader.setVisibility(View.VISIBLE);
+                    filler.setVisibility(View.INVISIBLE);
 
+                    todoData(view);
                 } else if (typeUser.equals("Teacher/Instructor/Professor")){
                     statsData1Layout.setVisibility(View.INVISIBLE);
+                    todoHeader.setVisibility(View.INVISIBLE);
                     tv_classStatsHeader.setVisibility(View.INVISIBLE);
+                    filler.setVisibility(View.VISIBLE);
                 } else {
                     return;
                 }
@@ -146,7 +162,12 @@ public class DashboardFragment extends Fragment{
             }
         });
     }
+    /*
+        Summary
+        Function to Scan the documents and if the current userID is present in the
+        array that the one who finished the activity will incrememnt the counting into 1
 
+     */
     public void retrieveDataForIncompleteActivities(final OnCountRetrievedListener listener){
         firebaseFirestore.collection("class")
                 .whereArrayContains("classStudents", userId)
@@ -188,6 +209,62 @@ public class DashboardFragment extends Fragment{
                 });
     }
 
+    public void todoData(@NonNull View view){
+        todoRecyclerView = view.findViewById(R.id.todoRecyclerView);
+
+        todoArrayList = new ArrayList<>();
+        mTodoClassItemAdapter = new todoClassItemAdapter(todoArrayList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        todoRecyclerView.setLayoutManager(layoutManager);
+        todoRecyclerView.setAdapter(mTodoClassItemAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                todoRecyclerView.getContext(),
+                layoutManager.getOrientation()
+        );
+
+        dividerItemDecoration.setDrawable(
+                ContextCompat.getDrawable(getContext(), R.drawable.divider_item_2)
+        );
+
+        todoRecyclerView.addItemDecoration(dividerItemDecoration);
+        firebaseFirestore.collection("class")
+                .whereArrayContains("classStudents", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(!task.isSuccessful()){
+                            // Error: Getting the required documents
+                        }
+
+                        todoArrayList.clear();
+
+                        List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                        for (DocumentSnapshot document : documents) {
+                            List<Map<String, Object>> classActivitiesList = (List<Map<String, Object>>) document.get("classActivities");
+                            if (classActivitiesList != null) {
+                                for (Map<String, Object> classActivity : classActivitiesList) {
+                                    if(classActivity.containsKey("classActivityPostSubmissionBinLink")){
+                                        todoArrayList.add(new ClassActivityPost(
+                                                classActivity.get("classActivityPostTitle").toString(),
+                                                classActivity.get("classActivityPostSubject").toString(),
+                                                classActivity.get("classActivityPostDueDate").toString(),
+                                                classActivity.get("classActivityPostStatus").toString(),
+                                                classActivity.get("classActivityPostSubmissionBinLink").toString(),
+                                                (ArrayList<String>) classActivity.get("studentWhoFinishedClassActivityPost")
+                                        ));
+                                    }
+
+                                }
+                            }
+                        }
+
+                        mTodoClassItemAdapter.notifyDataSetChanged();
+
+                    }
+                });
+    }
     public void dashboardData1(@NonNull View view){
 
         dashboardClassItemRecyclerView = view.findViewById(R.id.dashboardRecyclerView);
@@ -250,6 +327,66 @@ public class DashboardFragment extends Fragment{
                 });
     }
 
+    class todoClassItemAdapter extends RecyclerView.Adapter<todoClassItemAdapter.todoItemHolder>{
+
+        ArrayList<ClassActivityPost> postData;
+
+        public todoClassItemAdapter(ArrayList<ClassActivityPost> postData) {
+            super();
+            this.postData = postData;
+        }
+        @NonNull
+        @Override
+        public todoClassItemAdapter.todoItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.to_do_class_activity_item, parent, false);
+            return new todoClassItemAdapter.todoItemHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull todoClassItemAdapter.todoItemHolder holder, int position) {
+            ClassActivityPost nClassActivityPost = postData.get(position);
+            holder.textViewPostTitle.setText(nClassActivityPost.getClassActivityPostTitle());
+            holder.textViewSubject.setText(nClassActivityPost.getClassActivityPostSubject());
+            holder.textViewPostDueDate.setText(nClassActivityPost.getClassActivityPostDueDate());
+            holder.classActivityPostData = nClassActivityPost;
+        }
+
+        @Override
+        public int getItemCount() {
+            return postData.size();
+        }
+
+        class todoItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+            TextView textViewPostTitle, textViewPostDueDate, textViewSubject;
+            ClassActivityPost classActivityPostData;
+            public todoItemHolder(@NonNull View itemView) {
+                super(itemView);
+
+
+                textViewPostTitle = itemView.findViewById(R.id.TclassPostTitle);
+                textViewPostDueDate = itemView.findViewById(R.id.TclassPostDuedate);
+                textViewSubject = itemView.findViewById(R.id.TclassPostSubject);
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), viewedClassActivity.class);
+
+                intent.putExtra("CLASS_TITLE",  classActivityPostData.getClassActivityPostTitle());
+                intent.putExtra("CLASS_SUBJECT",  classActivityPostData.getClassActivityPostSubject());
+                intent.putExtra("CLASS_DUEDATE",  classActivityPostData.getClassActivityPostDueDate());
+                intent.putExtra("CLASS_ACTIVITY_BIN",  classActivityPostData.getClassActivityPostSubmissionBinLink());
+                intent.putExtra("CLASS_POST_COMPLETION_STATUS",  classActivityPostData.getClassActivityPostStatus());
+                intent.putExtra("CLASS_POST_STUDENTWHOFINISHED",  classActivityPostData.getStudentWhoFinishedClassActivityPost());
+
+                intent.putExtra("CLASS_POST_TYPE",  "ACTIVITY POST");
+
+
+                //startActivity(intent);
+            }
+        }
+    }
     public interface OnCountRetrievedListener {
         void onCountRetrieved(int count);
     }
@@ -270,7 +407,7 @@ public class DashboardFragment extends Fragment{
         @NonNull
         @Override
         public ClassItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.dashboard_class_item, null, false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.dashboard_class_item, parent, false);
             return new ClassItemHolder(view);
         }
 
@@ -304,7 +441,6 @@ public class DashboardFragment extends Fragment{
 
                 intent.putExtra("CLASS_DATA", classData);
                 startActivity(intent);
-                Toast.makeText(getActivity(), "Hi "+textViewClassName.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         }
     }

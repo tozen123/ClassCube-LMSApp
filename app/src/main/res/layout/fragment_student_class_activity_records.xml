@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.StudentClassActivityRecordsFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/classRecsTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:elevation="4dp"
+
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/MAIN_COLOR"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/MAIN_COLOR"
+            app:tabTextColor="@color/black"
+
+            >
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/classRecsViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/classRecsTabLayout"
+            >
+        </androidx.viewpager.widget.ViewPager>
+    </RelativeLayout>
+
+
+
+</FrameLayout>
