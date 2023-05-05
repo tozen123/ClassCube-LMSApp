@@ -3,6 +3,7 @@ package com.doublehammerstudios.classcube;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doublehammerstudios.classcube.Activity.postCreatorActivity;
+import com.doublehammerstudios.classcube.Activity.postQuizCreatorActivity;
 import com.doublehammerstudios.classcube.Activity.viewedClassActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,13 +36,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class viewClass extends AppCompatActivity implements ClassPostItemAdapter.ItemClickListener{
+public class viewClass extends AppCompatActivity implements ClassPostItemAdapter.ItemClickListener, ClassActivityPostItemAdapter.ItemClickListener{
     public Class CLASS_DATA;
-    public String CLASS_DOC_ID;
+
     private TextView textView_className ,textView_classCode, textView_classSubject, textView_classTeacher;
 
     Configs mConfigs;
@@ -48,13 +53,12 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
     String userId;
 
     ProgressBar loadingPB;
-    FloatingActionButton fab;
 
     String class_data_str;
 
     TextView mtxtEmpty;
     Button btnRefresh, btnClassInfo;
-    private ClassPostItemAdapter classPostItemAdapterRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
         textView_classSubject = findViewById(R.id.txt_classSubject_value);
         textView_classTeacher = findViewById(R.id.txt_classTeacher_value);
         mtxtEmpty = findViewById(R.id.txtEmpty);
+
         // Load Pre-Data
         firebaseFirestore.collection("class")
                 .whereEqualTo("classCode", CLASS_DATA.classCode)
@@ -115,67 +120,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                     }
                 });
 
-        List<ClassPost> myObjects = new ArrayList<>();
-        ClassPostItemAdapter classPostItemAdapter = new ClassPostItemAdapter((ArrayList<ClassPost>) myObjects, viewClass.this);
-        classPostItemAdapter.setClickListener(viewClass.this);
-
-        RecyclerView recyclerView = findViewById(R.id.classDocsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(viewClass.this));
-
-        recyclerView.setAdapter(classPostItemAdapter);
-        String TAG = "viewClass.javaData";
-        firebaseFirestore.collection("class")
-                .whereEqualTo("classCode", CLASS_DATA.classCode)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        if (error != null) {
-                            Log.w(TAG, "Listen failed.", error);
-                            return;
-                        }
-
-                        myObjects.clear();
-
-                        if (!value.isEmpty()) {
-                            List<DocumentSnapshot> list = value.getDocuments();
-                            for (DocumentSnapshot documentSnapshot : list) {
-                                if (documentSnapshot.contains("classActivities")) {
-                                    List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
-                                    for (HashMap<String, String> map : objectList) {
-
-                                        String value1 = map.get("classPostDuedate");
-                                        String value2 = map.get("classFileUrl");
-                                        String value3 = map.get("classPostSubject");
-                                        String value4 = map.get("classPostTitle");
-                                        String value5 = map.get("postStatus");
-
-
-                                        if(value1 == null){
-                                            value1 = "No Schedule";
-                                        }
-
-                                        ClassPost myObject = new ClassPost(value4, value3, value1, value2, value5, null);
-                                        myObjects.add(myObject);
-                                    }
-                                }
-                            }
-                            // Notify the adapter that the data has changed
-                            classPostItemAdapter.notifyDataSetChanged();
-
-                            if(myObjects.size() == 0){
-                                mtxtEmpty.setVisibility(View.VISIBLE);
-                            } else {
-                                mtxtEmpty.setVisibility(View.INVISIBLE);
-                            }
-
-                        } else {
-                            Log.d(TAG, "No data found in Database");
-                        }
-                    }
-                });
-
-
+        loadPost();
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,8 +202,156 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
 
 
     }
-    public void onItemClick(View view, int position) {
+
+    private void loadPost() {
+
+        List<ClassPost> classPosts = new ArrayList<>();
+        List<ClassActivityPost> classActivityPosts = new ArrayList<>();
+
+        ClassPostItemAdapter classPostItemAdapter = new ClassPostItemAdapter((ArrayList<ClassPost>) classPosts, viewClass.this);
+        classPostItemAdapter.setClickListener(viewClass.this);
+
+        ClassActivityPostItemAdapter classActivityPostItemAdapter = new ClassActivityPostItemAdapter((ArrayList<ClassActivityPost>) classActivityPosts, viewClass.this);
+        classActivityPostItemAdapter.setClickListener(viewClass.this);
+
+        RecyclerView recyclerView = findViewById(R.id.classDocsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(viewClass.this));
+
+        /*
+            setting up the loader in the element
+         */
+
+        ConcatAdapter concatAdapter = new ConcatAdapter(classPostItemAdapter, classActivityPostItemAdapter);
+        recyclerView.setAdapter(concatAdapter);
+        String TAG = "viewClass.javaData";
+
+        firebaseFirestore.collection("class")
+                .whereEqualTo("classCode", CLASS_DATA.classCode)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (error != null) {
+                            Log.w(TAG, "Listen failed.", error);
+                            return;
+                        }
+
+                        classPosts.clear();
+                        classActivityPosts.clear();
+
+                        if (value.isEmpty()) {
+                            Log.d(TAG, "No data found in Database");
+                            return;
+                        }
+
+                        List<DocumentSnapshot> list = value.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : list) {
+                            if (!documentSnapshot.contains("classActivities")) {
+                                Log.d(TAG, "No called classActivities data found in Database");
+                                return;
+                            }
+
+                            List<HashMap<String, String>> objectList = (List<HashMap<String, String>>) documentSnapshot.get("classActivities");
+
+                            for (HashMap<String, String> map : objectList) {
+                                Object students = null;
+                                boolean completed = false;
+                                String value1 = null;
+                                String value2 = null;
+                                String value3 = null;
+                                String value4 = null;
+                                String value5 = null;
+                                String value6 = null;
+
+                                if(map.containsKey("classFileUrl")){
+                                    value1 = map.get("classPostDuedate");
+                                    value2 = map.get("classFileUrl");
+                                    value3 = map.get("classPostSubject");
+                                    value4 = map.get("classPostTitle");
+
+                                    if(value1 == null){
+                                        value1 = "No Schedule";
+                                    }
+
+                                    students = map.get("studentWhoFinishedClassPost");
+
+                                }
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                        Log.d("asdasdasdasd", "IM HERE");
+                                        value1 = map.get("classActivityPostDueDate");
+                                        value2 = map.get("classActivityPostStatus");
+                                        value3 = map.get("classActivityPostSubject");
+                                        value4 = map.get("classActivityPostSubmissionBinLink");
+                                        value5 = map.get("classActivityPostTitle");
+
+                                        if(value1 == null){
+                                            value1 = "No Schedule";
+                                        }
+
+                                        students = map.get("studentWhoFinishedClassActivityPost");
+                                }
+
+                                if (students instanceof String) {
+                                    String[] studentsArr = { (String) students };
+                                    for (String studentId : studentsArr) {
+                                        if (studentId.equals(userId)) {
+                                            completed = true;
+                                        }
+                                    }
+                                } else if (students instanceof List) {
+                                    List<String> studentsList = (List<String>) students;
+                                    if (studentsList.contains(userId)) {
+                                        completed = true;
+                                    }
+                                }
+
+                                value6 = completed ? "Completed" : "Incomplete";
+
+                                if(map.containsKey("classFileUrl")){
+                                    ClassPost newClassPost = new ClassPost(value4, value3, value1, value2, value6, null);
+                                    classPosts.add(newClassPost);
+                                }
+
+                                if(map.containsKey("classActivityPostSubmissionBinLink")){
+                                    Log.d("asdasdasdasd", "IM HERE I UPDATED THE STATUS");
+                                    ClassActivityPost newClassActivityPost = new ClassActivityPost(value5, value3, value1, value6, value4, null);
+                                    classActivityPosts.add(newClassActivityPost);
+                                }
+
+                            }
+                        }
+
+                        classPostItemAdapter.notifyDataSetChanged();
+                        classActivityPostItemAdapter.notifyDataSetChanged();
+
+                        if(classPosts.size() == 0 && classActivityPosts.size() == 0 ){
+                            mtxtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            mtxtEmpty.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+    }
+    public void onItemClickActivityPost(View view, int position){
         Intent intent = new Intent(viewClass.this, viewedClassActivity.class);
+
+        intent.putExtra("CLASS_TITLE",  ClassActivityPostItemAdapter.getItem(position).getClassActivityPostTitle());
+        intent.putExtra("CLASS_SUBJECT",  ClassActivityPostItemAdapter.getItem(position).getClassActivityPostSubject());
+        intent.putExtra("CLASS_DUEDATE",  ClassActivityPostItemAdapter.getItem(position).getClassActivityPostDueDate());
+        intent.putExtra("CLASS_ACTIVITY_BIN",  ClassActivityPostItemAdapter.getItem(position).getClassActivityPostSubmissionBinLink());
+        intent.putExtra("CLASS_POST_COMPLETION_STATUS",  ClassActivityPostItemAdapter.getItem(position).getClassActivityPostStatus());
+        intent.putExtra("CLASS_POST_STUDENTWHOFINISHED",  ClassActivityPostItemAdapter.getItem(position).getStudentWhoFinishedClassActivityPost());
+
+        intent.putExtra("CLASS_POST_TYPE",  "ACTIVITY POST");
+        intent.putExtra("CLASS_CODE",  CLASS_DATA.getClassCode());
+
+
+        startActivity(intent);
+        Toast.makeText(this, "" + ClassActivityPostItemAdapter.getItem(position).getClassActivityPostTitle(), Toast.LENGTH_SHORT).show();
+    }
+    public void onItemClickClassPost(View view, int position) {
+        Intent intent = new Intent(viewClass.this, viewedClassActivity.class);
+
 
         intent.putExtra("CLASS_TITLE",  ClassPostItemAdapter.getItem(position).getClassPostTitle());
         intent.putExtra("CLASS_SUBJECT",  ClassPostItemAdapter.getItem(position).getClassPostSubject());
@@ -267,6 +360,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
         intent.putExtra("CLASS_POST_COMPLETION_STATUS",  ClassPostItemAdapter.getItem(position).getPostStatus());
         intent.putExtra("CLASS_POST_STUDENTWHOFINISHED",  ClassPostItemAdapter.getItem(position).getstudentWhoFinishedClassPost());
 
+        intent.putExtra("CLASS_POST_TYPE",  "POST");
         intent.putExtra("CLASS_CODE",  CLASS_DATA.getClassCode());
 
 
@@ -320,17 +414,30 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
 
     public void createPost(){
         Intent intent = new Intent(viewClass.this, postCreatorActivity.class);
+        intent.putExtra("CLASS_POSTING_TYPE", "Post");
         intent.putExtra("CLASS_CODE", class_data_str);
+
         startActivity(intent);
 
         Toast.makeText(viewClass.this, "createPost()", Toast.LENGTH_SHORT).show();
     }
 
     public void createActivityPost(){
+        Intent intent = new Intent(viewClass.this, postCreatorActivity.class);
+        intent.putExtra("CLASS_POSTING_TYPE", "Activity Post");
+        intent.putExtra("CLASS_CODE", class_data_str);
+
+        startActivity(intent);
+
+
         Toast.makeText(viewClass.this, "createActivityPost()", Toast.LENGTH_SHORT).show();
     }
 
     public void createQuizPost(){
+        Intent intent = new Intent(viewClass.this, postQuizCreatorActivity.class);
+        intent.putExtra("CLASS_CODE", class_data_str);
+
+        startActivity(intent);
         Toast.makeText(viewClass.this, "createActivityPost()", Toast.LENGTH_SHORT).show();
     }
 }

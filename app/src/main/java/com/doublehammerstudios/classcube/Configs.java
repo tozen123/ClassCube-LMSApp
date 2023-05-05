@@ -16,4 +16,16 @@ public class Configs {
         return mInstance;
     }
 
+    /*
+            Summary
+            Global function to handle the current user type and returns true if the user type is student and false for teacher
+     */
+    public static boolean checkUserIfStudent(){
+        if(userType.equals("Student")){
+            return true;
+        } else if(userType.equals("Teacher/Instructor/Professor")){
+            return false;
+        }
+        return false;
+    }
 }

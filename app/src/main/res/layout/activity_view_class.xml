@@ -5,61 +5,110 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".viewClass"
-    android:padding="22dp">
+    >
 
+    <LinearLayout
+        android:id="@+id/classDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
 
-    <TextView
-        android:id="@+id/txt_className_value"
-        android:layout_width="wrap_content"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="28dp"
+
+        android:orientation="vertical"
+        android:background="@drawable/toolbar_design"
+        android:elevation="7dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_className_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ClassName"
+
+                android:textColor="#ff396e"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            >
+            <TextView
+                android:id="@+id/txt_classCode_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ClassCode"
+                android:layout_below="@+id/txt_className_value"
+
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            >
+            <TextView
+                android:id="@+id/txt_classSubject_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ClassSubject"
+                android:layout_below="@+id/txt_classCode_value"
+
+                android:layout_weight="0.5"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            >
+            <TextView
+                android:id="@+id/txt_classTeacher_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ClassTeacher"
+                android:layout_below="@+id/txt_classSubject_value"
+
+                android:layout_weight="0.5"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/classControl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ClassName"
+        android:layout_below="@+id/classDetailsLayout"
+        android:gravity="end"
+        android:layout_marginTop="5dp"
+        >
+        <Button
+            android:id="@+id/classInfoButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/icon_info"
+            />
 
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        />
+        <Button
+            android:id="@+id/refreshButtonViewClass"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/btn_refresh"
+            />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Class Code: "
-        android:layout_below="@+id/txt_className_value"/>
-
-    <TextView
-        android:id="@+id/txt_classCode_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:text="ClassCode"
-        android:layout_below="@+id/txt_className_value"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Class Subject:"
-        android:layout_below="@+id/txt_classCode_value"/>
-
-    <TextView
-        android:id="@+id/txt_classSubject_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:text="ClassSubject"
-        android:layout_below="@+id/txt_classCode_value"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Class Teacher: "
-        android:layout_below="@+id/txt_classSubject_value"/>
-
-    <TextView
-        android:id="@+id/txt_classTeacher_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:text="ClassTeacher"
-        android:layout_below="@+id/txt_classSubject_value"/>
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -73,38 +122,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:src="@drawable/icon_add"
-        android:layout_margin="16dp"
-
         android:layout_alignParentEnd="true"
+
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/icon_add"
+
+        app:borderWidth="0dp"
+        app:fabCustomSize="68dp"
+        app:maxImageSize="36dp"
+        android:backgroundTint="@color/white"
+
         />
 
-    <TextView
-        android:id="@+id/titleAct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_classTeacher_value"
-
-        android:layout_marginTop="40dp"
-        android:text="Class Works"
-
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/classDocsRecyclerView"
-
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titleAct"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/classControl"
+        android:orientation="vertical"
+        android:padding="14dp"
+        >
 
+        <TextView
+            android:id="@+id/titleAct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Classworks"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            />
 
-        android:layout_alignParentBottom="true"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/classDocsRecyclerView"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/titleAct"
+            android:layout_marginTop="15dp"
+            />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtEmpty"
@@ -112,27 +172,6 @@
         android:layout_height="wrap_content"
         android:text="No activities in the class"
         android:layout_centerInParent="true"
-        />
-
-    <Button
-        android:id="@+id/classInfoButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="80dp"
-        android:drawableLeft="@drawable/icon_info"
-        android:layout_toStartOf="@+id/refreshButtonViewClass"
-        />
-
-    <Button
-        android:id="@+id/refreshButtonViewClass"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
-        android:drawableLeft="@drawable/btn_refresh"
         />
 
 </RelativeLayout>

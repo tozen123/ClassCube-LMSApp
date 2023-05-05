@@ -7,47 +7,34 @@
 
     >
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         >
-
         <TextView
             android:id="@+id/helloUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello, "
-            android:layout_marginTop="24dp"
-            android:textSize="28sp"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:paddingLeft="10dp"
+
             />
 
         <TextView
             android:id="@+id/helloUserValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NULL"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             android:layout_toEndOf="@+id/helloUser"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_500"
-            />
-
-        <TextView
-            android:id="@+id/headerTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:layout_marginTop="25dp"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:layout_below="@+id/helloUser"
-            android:paddingLeft="10dp"
-            />
-
+            android:text="NULL"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/linearLayoutData1"
@@ -56,8 +43,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
 
-            android:layout_height="165dp"
-            android:layout_below="@+id/headerTitle"
+            android:layout_height="210dp"
+            android:layout_below="@+id/helloUser"
             android:background="@drawable/placeholder_data"
             android:elevation="6dp"
             android:layout_marginTop="18dp"
@@ -73,11 +60,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
-                android:layout_centerInParent="true"
-                android:scrollbars="horizontal"
-
                 android:layout_below="@+id/txtboxTitle"
-                />
+
+                android:layout_centerInParent="true"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="6dp"
+                android:scrollbars="horizontal" />
 
             <TextView
                 android:id="@+id/txtboxTitle"
@@ -86,12 +76,164 @@
                 android:text="Classes"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="#faad2e"
                 />
 
-
-
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayoutData1"
+            >
+
+
+        <TextView
+            android:id="@+id/ClassStatsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Statistics"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#faad2e"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="15dp"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/statsData1"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/ClassStatsHeader"
+            android:orientation="horizontal"
+
+
+            android:weightSum="1"
+
+
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+
+
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+
+                    android:text="Joined Class"
+                    >
+                </TextView>
+                <TextView
+                    android:id="@+id/joinedClassValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:paddingRight="45dp"
+                    android:textSize="68sp"
+                    android:text="0"
+                    android:textStyle="bold"
+
+                    android:layout_marginTop="9dp"
+                    >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+
+
+                    android:text="Incomplete Activities"
+                    >
+                </TextView>
+                <TextView
+                    android:id="@+id/incompleteActivitesValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:paddingRight="45dp"
+                    android:textSize="68sp"
+                    android:text="0"
+                    android:textStyle="bold"
+
+
+                    android:layout_marginTop="9dp"
+                    >
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/ToDoHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To-do"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#faad2e"
+            android:layout_below="@+id/statsData1"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="15dp"
+            />
+        <LinearLayout
+            android:id="@+id/todoData1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/ToDoHeader"
+            android:orientation="horizontal"
+
+            android:layout_marginBottom="18dp"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+
+                android:id="@+id/todoRecyclerView"
+                >
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
 
     </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/filler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearLayoutData1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#faad2e"
+                android:layout_marginTop="24dp"
+                >
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

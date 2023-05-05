@@ -19,9 +19,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.ClassActivityPost;
 import com.doublehammerstudios.classcube.ClassPost;
 import com.doublehammerstudios.classcube.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +47,12 @@ import java.util.Locale;
 
 public class postCreatorActivity extends AppCompatActivity {
 
+    /*
+    Handles post creating in two major features: Post and Activity Post
+
+     */
     public String CLASS_CODE;
+    public String CLASS_POSTING_TYPE;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -55,16 +62,16 @@ public class postCreatorActivity extends AppCompatActivity {
     String dateOutput;
     EditText input_postTitle, input_postSubject;
     Button button_Post;
-    TextView textView_dateText, textView_filePath;
+    TextView textView_dateText, textView_filePath, textView_postHeader;
     DatePickerDialog datePickerDialog;
+    LinearLayout extraDataLayout;
 
     ImageButton imageButton_AddFile;
     private static final int PICK_FILE_REQUEST_CODE = 1234;
     private Uri file_uri;
     private String fileUrl;
     private String _postStatus = "Incomplete";
-    StorageReference storageReference;
-    DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +79,16 @@ public class postCreatorActivity extends AppCompatActivity {
 
         Intent iin= getIntent();
         Bundle bundle = iin.getExtras();
-        CLASS_CODE = (String) bundle.get("CLASS_CODE");
 
+        if(bundle != null){
+            CLASS_CODE = (String) bundle.get("CLASS_CODE");
+            CLASS_POSTING_TYPE = (String) bundle.get("CLASS_POSTING_TYPE");
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
+
 
         btnPostButton = findViewById(R.id.postCreator_PostButton);
 
@@ -87,11 +98,29 @@ public class postCreatorActivity extends AppCompatActivity {
         textView_dateText = findViewById(R.id.postCreator_postDueDateText);
         imageButton_AddFile = findViewById(R.id.postCreator_postAddFile);
         textView_filePath = findViewById(R.id.postCreator_postAddFilePath);
+        textView_postHeader = findViewById(R.id.postCreator_postTypeTitle);
+        extraDataLayout = findViewById(R.id.extraDataLayout);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         textView_dateText.setText(formattedDate);
+
+        /*
+        Disable and Hide some element depending on the POSTING_TYPE
+         */
+
+        if(CLASS_POSTING_TYPE.equals("Post")){
+            imageButton_AddFile.setEnabled(true);
+            extraDataLayout.setVisibility(View.VISIBLE);
+            textView_postHeader.setText("Module Post");
+
+        } else if (CLASS_POSTING_TYPE.equals("Activity Post")){
+            imageButton_AddFile.setEnabled(false);
+            extraDataLayout.setVisibility(View.INVISIBLE);
+            textView_postHeader.setText("Activity Post");
+        }
+
 
         btnPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +130,18 @@ public class postCreatorActivity extends AppCompatActivity {
 
                 if(title.isEmpty()){
                     Toast.makeText(postCreatorActivity.this, "Error: title field must not be empty!", Toast.LENGTH_SHORT).show();
-                } else if(subject.isEmpty()){
-                    Toast.makeText(postCreatorActivity.this, "Error: title subject must not be empty!", Toast.LENGTH_SHORT).show();
-                } else {
+                    return;
+                }
 
-                    if(file_uri == null){
+                if(subject.isEmpty()){
+                    Toast.makeText(postCreatorActivity.this, "Error: title subject must not be empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(CLASS_POSTING_TYPE.equals("Post")) {
+                    Toast.makeText(postCreatorActivity.this, "CLASS_POSTING_TYPE: Post", Toast.LENGTH_SHORT).show();
+
+                    if (file_uri == null) {
                         ClassPost post = new ClassPost(title, subject, dateOutput, fileUrl, _postStatus, null);
                         createClassPost(post);
                     } else {
@@ -118,6 +154,35 @@ public class postCreatorActivity extends AppCompatActivity {
                             }
                         });
                     }
+                } else if (CLASS_POSTING_TYPE.equals("Activity Post")){
+
+                    final ProgressDialog progressDialog = new ProgressDialog(postCreatorActivity.this);
+                    progressDialog.setTitle("Creating Activity Post....");
+                    progressDialog.show();
+
+                    Toast.makeText(postCreatorActivity.this, "CLASS_POSTING_TYPE: Activity Post", Toast.LENGTH_SHORT).show();
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference folderRef = storageRef.child("activity_bins/"+CLASS_CODE+"/"+title);
+                    folderRef.child(".metadata").putBytes(new byte[0])
+                            .addOnSuccessListener(taskSnapshot -> {
+                                String submissionLink = folderRef.getPath().toString();
+
+                                Log.d("submissionLINKED", "MSG: "+submissionLink);
+                                ClassActivityPost activityPost = new ClassActivityPost(title, subject, dateOutput, _postStatus, submissionLink,null);
+                                createClassActivityPost(activityPost);
+                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                    double progress = (100.0 * snapshot.getBytesTransferred())/snapshot.getTotalByteCount();
+                                    progressDialog.setMessage("Making Directory Bin: "+(int)progress+"%");
+                                }
+                            })
+
+                            .addOnFailureListener(e -> {
+                                // SYMPRE ERROR NANAMAN
+                            });
                 }
             }
         });
@@ -206,6 +271,31 @@ public class postCreatorActivity extends AppCompatActivity {
                                 firebaseFirestore.collection("class")
                                         .document(document.getId())
                                         .update("classActivities", FieldValue.arrayUnion(newClassPost));
+                            }
+
+                            finish();
+
+                        } else {
+                            Toast.makeText(postCreatorActivity.this, "Error creating class documents: "+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+    private void createClassActivityPost(ClassActivityPost newClassActivityPost){
+        firebaseFirestore.collection("class")
+                .whereEqualTo("classCode", CLASS_CODE)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Toast.makeText(postCreatorActivity.this, "Successfully created class post : "+document.getString("className"), Toast.LENGTH_SHORT).show();
+
+                                firebaseFirestore.collection("class")
+                                        .document(document.getId())
+                                        .update("classActivities", FieldValue.arrayUnion(newClassActivityPost));
                             }
 
                             finish();

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ClassCube</string>
+    <string name="app_name"><b>ClassCube</b></string>
 
     <string name="register">Create Account</string>
     <string name="login">  Login</string>

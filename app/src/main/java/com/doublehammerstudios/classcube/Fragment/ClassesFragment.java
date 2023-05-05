@@ -42,6 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 
 public class ClassesFragment extends Fragment implements ClassHandler {
@@ -179,10 +180,11 @@ public class ClassesFragment extends Fragment implements ClassHandler {
 
             if(input_className.getText().toString().isEmpty()){
                 Toast.makeText(getActivity(), "Error: failed to create class due to field, Class Name being empty", Toast.LENGTH_LONG).show();
-            } else if(input_classCode.getText().toString().isEmpty()){
-                Toast.makeText(getActivity(), "Error: failed to create class due to field, Class Code being empty", Toast.LENGTH_LONG).show();
             } else if(input_classSubject.getText().toString().isEmpty()){
                 Toast.makeText(getActivity(), "Error: failed to create class due to field, Class Subject being empty", Toast.LENGTH_LONG).show();
+            } else if(input_classCode.getText().toString().isEmpty()){
+                String generatedCode = randomCodeGenerator(6);
+                CreateClass(input_className.getText().toString(), generatedCode, input_classSubject.getText().toString());
             } else {
                 CreateClass(input_className.getText().toString(), input_classCode.getText().toString(), input_classSubject.getText().toString());
             }
@@ -199,7 +201,18 @@ public class ClassesFragment extends Fragment implements ClassHandler {
         dialog.setCancelable(false);
         dialog.show();
     }
+    String randomCodeGenerator(int stringLength){
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(stringLength);
 
+        for (int i = 0; i < stringLength; i++) {
+            int index = random.nextInt(letters.length());
+            char randomChar = letters.charAt(index);
+            sb.append(randomChar);
+        }
+        return sb.toString();
+    }
     private void CreateClass(String cc_className, String cc_classCode, String cc_classSubject){
         Class newClass = new Class(cc_className, cc_classCode, cc_classSubject, userId, Configs.userName, null);
         firebaseFirestore.collection("class")

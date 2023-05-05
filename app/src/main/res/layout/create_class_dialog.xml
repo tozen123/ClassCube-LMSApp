@@ -12,7 +12,14 @@
         android:text="Class Information"
         android:textSize="24sp">
     </TextView>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Code is OPTIONAL. If it leave as blank, the system will automatically generate unique random code."
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp">
+    </TextView>
     <EditText
         android:id="@+id/edt_className_create"
         android:layout_width="match_parent"

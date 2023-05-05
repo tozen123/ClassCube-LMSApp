@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.doublehammerstudios.classcube.Fragment.ClassesFragment;
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.Fragment.DashboardFragment;
+import com.doublehammerstudios.classcube.Fragment.StudentClassActivityRecordsFragment;
 import com.doublehammerstudios.classcube.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     String userId;
 
     Configs mConfigs;
+
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.txt_username);
         TextView navType = (TextView) headerView.findViewById(R.id.txt_type);
@@ -66,8 +70,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
                 navUsername.setText(name);
                 navType.setText(typeUser);
+
+                checkUserForNavFeatures();
             }
         });
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +82,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         Objects.requireNonNull(getSupportActionBar()).setTitle("ClassCube");
 
         drawerLayout = findViewById(R.id.drawer_layout);
-
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -89,9 +95,19 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
     }
-
+    public void checkUserForNavFeatures(){
+        Menu navMenu = navigationView.getMenu();
+        if(Configs.userType.equals("Teacher/Instructor/Professor")){
+            navMenu.findItem(R.id.nav_records).setVisible(true);
+        } else if(Configs.userType.equals("Student")) {
+            navMenu.findItem(R.id.nav_records).setVisible(false);
+        } else{
+            return;
+        }
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case R.id.nav_dashboard:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
@@ -100,8 +116,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ClassesFragment()).commit();
                 break;
             case R.id.nav_settings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.nav_records:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StudentClassActivityRecordsFragment()).commit();
                 break;
             case R.id.nav_logout:
                 userLogout();

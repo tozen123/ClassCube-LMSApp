@@ -78,7 +78,7 @@ public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdap
 
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onItemClickClassPost(view, getAdapterPosition());
         }
 
     }
@@ -94,7 +94,7 @@ public class ClassPostItemAdapter extends RecyclerView.Adapter<ClassPostItemAdap
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClickClassPost(View view, int position);
     }
 
 }
