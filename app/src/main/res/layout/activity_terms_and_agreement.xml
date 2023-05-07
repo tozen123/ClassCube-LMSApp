@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.TermsAndAgreementActivity">
+    tools:context=".Activity.TermsAndAgreementActivity"
+    android:background="@drawable/background_app">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/background_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
+        android:width="380dp"
+        android:height="680dp"
+        android:background="@drawable/borderstyle"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/terms_conditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="50dp"
+        android:padding="5dp"
+        android:text="Terms and Conditions"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="350dp"
+        android:layout_height="480dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="79dp"
+        android:background="@drawable/borderstyle">
+
+        <LinearLayout
+            android:id="@+id/boxLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/terms_and_conditionsss"
+                android:textColor="@color/black"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/back_buttonz"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/scrollView2"
+        android:text="Back"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/borderstyle"
+        android:backgroundTint="#fdbe02"/>
+
+</RelativeLayout>

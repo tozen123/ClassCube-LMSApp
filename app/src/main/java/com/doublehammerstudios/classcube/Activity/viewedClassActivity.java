@@ -71,7 +71,6 @@ public class viewedClassActivity extends AppCompatActivity {
         This code handles the viewed class post, Module Post and Activity Post.
 
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -264,7 +263,7 @@ public class viewedClassActivity extends AppCompatActivity {
         });
 
         checkTheUserAccomplishment();
-        String TAG = "sw_markAsCompleted_1"; // FOR LOGGING DATA MUST BE DELETED AT ALL COST
+
         sw_markAsCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -303,9 +302,6 @@ public class viewedClassActivity extends AppCompatActivity {
                                                 if(map.get("classPostTitle").toString().equals(POST_TITLE)){
                                                     List<String> students = (List<String>) map.get("studentWhoFinishedClassPost");
 
-                                                    Log.d(TAG, "classPostTitle: "+map.get("classPostTitle"));
-                                                    Log.d(TAG, "studentWhoFinishedClassPost: "+map.get("studentWhoFinishedClassPost"));
-
                                                     if (students == null) {
                                                         students = new ArrayList<>();
                                                     }
@@ -326,9 +322,6 @@ public class viewedClassActivity extends AppCompatActivity {
                                             if(map.containsKey("classActivityPostSubmissionBinLink")){
                                                 if(map.get("classActivityPostTitle").toString().equals(POST_TITLE)){
                                                     List<String> students = (List<String>) map.get("studentWhoFinishedClassActivityPost");
-
-                                                    Log.d(TAG, "classActivityPostTitle: "+map.get("classActivityPostTitle"));
-                                                    Log.d(TAG, "studentWhoFinishedClassActivityPost: "+map.get("studentWhoFinishedClassActivityPost"));
 
                                                     if (students == null) {
                                                         students = new ArrayList<>();

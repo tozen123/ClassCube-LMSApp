@@ -165,7 +165,6 @@ public class ClassesFragment extends Fragment implements ClassHandler {
     public void showCreateClassDialogButtonClicked(View view) {
         // Create an alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Create Class");
 
         // set the custom layout
         final View customLayout = getLayoutInflater().inflate(R.layout.create_class_dialog, null);
@@ -234,7 +233,6 @@ public class ClassesFragment extends Fragment implements ClassHandler {
     public void showJoinClassDialogButtonClicked(View view) {
         // Create an alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Join Class");
 
         // set the custom layout
         final View customLayout = getLayoutInflater().inflate(R.layout.join_class_dialog, null);
