@@ -225,15 +225,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/linearLayoutData1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="#faad2e"
-                android:layout_marginTop="24dp"
-                >
-            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>

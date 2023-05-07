@@ -128,9 +128,6 @@ public class RegisterActivity extends AppCompatActivity {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
-            Log.d("SUPERTAGGER", "EMAIL: "+email);
-            Log.d("SUPERTAGGER", "PASSWORD: "+password);
-            Log.d("SUPERTAGGER", "TYPEOFUSER: "+typeOfUser);
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override

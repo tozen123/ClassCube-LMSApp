@@ -4,10 +4,12 @@ package com.doublehammerstudios.classcube.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.doublehammerstudios.classcube.Fragment.AboutFragment;
 import com.doublehammerstudios.classcube.Fragment.ClassesFragment;
 import com.doublehammerstudios.classcube.Configs;
 import com.doublehammerstudios.classcube.Fragment.DashboardFragment;
@@ -125,6 +128,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.nav_logout:
                 userLogout();
                 break;
+            case R.id.nav_about:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+                break;
+
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -142,7 +149,24 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Exit");
+            builder.setMessage("Are you sure you want to exit?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
         }
+
     }
 }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
 
     String class_data_str;
 
-    TextView mtxtEmpty;
+    ImageView imgEmpty;
     Button btnRefresh, btnClassInfo;
 
     @Override
@@ -90,7 +91,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
         textView_classCode = findViewById(R.id.txt_classCode_value);
         textView_classSubject = findViewById(R.id.txt_classSubject_value);
         textView_classTeacher = findViewById(R.id.txt_classTeacher_value);
-        mtxtEmpty = findViewById(R.id.txtEmpty);
+        imgEmpty = findViewById(R.id.imageEmpty);
 
         // Load Pre-Data
         firebaseFirestore.collection("class")
@@ -325,9 +326,9 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                         classActivityPostItemAdapter.notifyDataSetChanged();
 
                         if(classPosts.size() == 0 && classActivityPosts.size() == 0 ){
-                            mtxtEmpty.setVisibility(View.VISIBLE);
+                            imgEmpty.setVisibility(View.VISIBLE);
                         } else {
-                            mtxtEmpty.setVisibility(View.INVISIBLE);
+                            imgEmpty.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -384,7 +385,7 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose type of post");
 
-        String[] post_options = {"Module Post", "Activity Post", "Quiz Post"};
+        String[] post_options = {"Module Post", "Activity Post"};
         builder.setItems(post_options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -394,9 +395,6 @@ public class viewClass extends AppCompatActivity implements ClassPostItemAdapter
                         break;
                     case 1:
                         createActivityPost();
-                        break;
-                    case 2:
-                        createQuizPost();
                         break;
                 }
             }

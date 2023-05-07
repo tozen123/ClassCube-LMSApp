@@ -32,4 +32,42 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="about_content">ClassCube was developed by two passionate college students who believe in the power of technology to transform the way we learn. Our app is designed to empower both students and teachers with innovative features and tools to enhance the educational experience.
+                                \n As students ourselves, we understand the challenges of traditional learning methods and the importance of adapting to the digital age. That\'s why we\'ve created a platform that is intuitive, user-friendly, and accessible to all.</string>
+
+    <string name="developers">Developers</string>
+    <string name="devs"> DOUBLE HAMMER STUDIOS \n  - Christian Serwelas \n  - Marvin Glyn Peña</string>
+    <string name="terms_and_conditionsss"> Welcome to our educational app, designed for teachers and students. By using our app, you agree to the following terms and conditions: \n
+        Use of the App
+        \nOur app is designed to provide educational resources and tools to teachers and students. You may use the app for personal or educational purposes only. You may not use the app for any commercial purposes.
+        User Accounts
+        \nIn order to access certain features of the app, you may be required to create a user account. You agree to provide accurate and complete information when creating your account, and to keep your login information confidential. You are responsible for all activities that occur under your account.
+        Content
+        \nOur app contains educational content including, but not limited to, text, images, videos, and audio recordings. This content is provided for educational purposes only, and is not intended to be a substitute for professional advice or services.
+        User Conduct
+        \nYou agree to use the app in a responsible and lawful manner. You may not use the app to: Upload or share any content that is unlawful,harmful,threatening, abusive, harassing, defamatory, vulgar, obscene, or otherwise objectionable
+        \nImpersonate any person or entity, or falsely state or misrepresent your affiliation with a person or entity.
+        \nInterfere with or disrupt the app or its servers, networks, or services.
+        \nUse the app to send unsolicited messages or advertisements.
+        Intellectual Property
+        \nAll content provided on our app is the property of our company or its licensors, and is protected by copyright and other intellectual property laws. You may not copy, modify, distribute, or display any of the content except as expressly authorized by us.
+        Disclaimer of Warranties
+        \nOur app is provided on an "as is" and "as available" basis. We make no representations or warranties of any kind, express or implied, as to the operation of the app or the information, content, materials, or products included on the app. You use the app at your own risk.
+        Limitation of Liability
+        \nTo the fullest extent permitted by law, we will not be liable for any damages of any kind arising from the use of our app, including, but not limited to, direct, indirect, incidental, punitive, and consequential damages.
+        Changes to Terms and Conditions
+        \nWe reserve the right to change these terms and conditions at any time without notice. Your continued use of the app following any such changes constitutes your agreement to the new terms and conditions.
+
+
+
+
+    </string>
+
+    <string name="enter_email">&#160;&#160;&#160;&#160;Enter your email address</string>
+    <string name="email_message">Enter the email associated with your account and we\'ll send an email with instructions to reset your password.</string>
+    <string name="tos_accept">You must accept the terms and conditions \n to continue the app</string>
+    <string name="check_box">Accept the TOS</string>
+    <string name="credits">Credits: \n
+                                    3D Empty Box: https://www.vecteezy.com/png/10878977–3d-rendering-of-empty-cardboard-box-cute-icon-illustration-empty-state \n
+                                    3D Model Guy Studying: https://icons8.com/illustrations/author/zD2oqC8lLBBA </string>
 </resources>

@@ -10,13 +10,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Class Information"
-        android:textSize="24sp">
+        android:textColor="@color/MAIN_COLOR"
+        android:textStyle="bold"
+        android:textSize="26sp">
     </TextView>
 
     <EditText
         android:id="@+id/edt_classCode_join"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:background="@drawable/input_layout"
+        android:backgroundTint="@color/MAIN_COLOR"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+
         android:textSize="16sp"
         android:layout_marginTop="12dp"
         android:hint="Enter Class Code"/>

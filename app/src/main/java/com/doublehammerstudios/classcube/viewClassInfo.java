@@ -44,6 +44,11 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
 
     TextView noStudentsTextView, mClassName;
     RecyclerView recyclerView;
+
+    /*
+        Update:
+        4 Bugs have been fixed. student item card numbering, no students text view visibility, back button decrement and delete crash.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,18 +76,15 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
 
         mClassName.setText(strClassName);
 
-         /*
-        ------------------------------------------------------------------------------------------------------------------
-        FIX THIS PART
-        ------------------------------------------------------------------------------------------------------------------
-         */
 
         List<String> data;
         data = Arrays.asList(stdList);
         if (data.contains("No student has joined this class")) {
             recyclerView.setVisibility(View.GONE);
+            noStudentsTextView.setVisibility(View.VISIBLE);
         } else {
             recyclerView.setVisibility(View.VISIBLE);
+            noStudentsTextView.setVisibility(View.GONE);
         }
 
 
@@ -168,6 +170,23 @@ public class viewClassInfo extends AppCompatActivity implements classListAdapter
             btnDeleteClass.setVisibility(View.VISIBLE);
             btnDeleteClass.setEnabled(true);
         }
+
+
+    }
+    @Override
+    public void onBackPressed() {
+        firebaseFirestore.collection("class")
+                .whereEqualTo("classCode", mClassCode)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        finish();
+                        Intent i=new Intent(viewClassInfo.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                    }
+                });
     }
 
     @Override
@@ -223,8 +242,7 @@ class classListAdapter extends RecyclerView.Adapter<classListAdapter.ViewHolder>
         holder.myTextView.setText(student);
         String item = mData.get(position);
 
-        int itemCount = getItemCount();
-        holder.bind(item, itemCount);
+        holder.myTextViewCount.setText((position + 1) + ". ");
     }
 
     // total number of rows
@@ -251,7 +269,7 @@ class classListAdapter extends RecyclerView.Adapter<classListAdapter.ViewHolder>
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
 
-        public void bind(String item, int itemCount) {
+        public void bind(String item, String itemCount) {
 
             myTextViewCount.setText(""+itemCount);
         }

@@ -1,9 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SettingsActivity">
+    tools:context=".Activity.SettingsActivity"
+    >
+    <LinearLayout
+        android:id="@+id/lly"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@color/MAIN_COLOR"
+        >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/returnBut"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_back"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="center"
+
+            android:layout_marginStart="20dp"
+            >
+        </Button>
+
+        <TextView
+            android:id="@+id/setttingHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+
+
+            android:text="Settings"
+            android:textColor="@color/white"
+            android:textSize="26sp"
+
+
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/main_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/lly"
+
+        android:text="Personalization"
+
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_below="@+id/main_text"
+
+        android:id="@+id/switch_mode"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+
+
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+
+        android:background="@drawable/borderstyle"
+        android:paddingLeft="70dp"
+        android:text="Light Mode"
+        android:textSize="18sp"
+        />
+
+    <ImageView
+        android:id="@+id/dark_light_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:layout_below="@+id/main_text"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="35dp"
+
+        app:srcCompat="@drawable/light_sun_icon"
+        />
+
+    <TextView
+        android:id="@+id/support_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/dark_light_icon"
+        android:text="Support"
+
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"  />
+
+    <TextView
+        android:id="@+id/report_a_problem2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/support_text"
+
+        android:layout_centerInParent="true"
+
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/borderstyle"
+        android:gravity="center|left"
+        android:paddingLeft="60dp"
+        android:text="Report a Problem"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/report_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+
+        android:layout_below="@+id/support_text"
+        android:layout_marginTop="45dp"
+        android:layout_marginStart="35dp"
+
+        app:srcCompat="@drawable/report_icon" />
+
+    <TextView
+        android:id="@+id/tos_text"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/report_a_problem2"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+
+        android:background="@drawable/borderstyle"
+        android:gravity="center|left"
+        android:paddingLeft="60dp"
+        android:text="Terms and Conditions"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <ImageView
+        android:id="@+id/terms_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/report_a_problem2"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="35dp"
+        app:srcCompat="@drawable/terms_icon" />
+</RelativeLayout>

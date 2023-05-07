@@ -1,4 +1,4 @@
-package com.doublehammerstudios.classcube;
+package com.doublehammerstudios.classcube.Fragment;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -6,19 +6,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doublehammerstudios.classcube.Class;
+import com.doublehammerstudios.classcube.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -29,11 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class InsideStudentClassActivityRecordFragment extends Fragment {
     private String className;
@@ -43,7 +42,8 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
     TableLayout tableLayout;
 
     Class currentClass;
-
+    ImageView emptyImage;
+    TextView emptyText;
     public static InsideStudentClassActivityRecordFragment newInstance(Class objClass) {
         InsideStudentClassActivityRecordFragment fragment = new InsideStudentClassActivityRecordFragment();
         Bundle args = new Bundle();
@@ -78,6 +78,9 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
+
+        emptyImage = view.findViewById(R.id.imageEmpty3d);
+        emptyText = view.findViewById(R.id.emptyText);
 
         Log.d("Statement 1", "dataClass \n" +
                 "className: " + currentClass.getClassName() +
@@ -181,6 +184,8 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
                         }
                     }
                 });
+
+
     }
     private void parseStudentId(String studentId, OnSuccessListener<String> listener){
         firebaseFirestore
@@ -212,9 +217,10 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
             TextView textView = new TextView(getContext());
             textView.setText(ndata);
 
-            textView.setTextColor(Color.BLACK);
+            textView.setTextColor(Color.WHITE);
             textView.setTextSize(16);
-            textView.setPadding(24, 14, 24, 14);
+            textView.setPadding(32, 16, 32, 16);
+            textView.setTypeface(null, Typeface.BOLD);
 
             tableRow.addView(textView);
         }
@@ -224,6 +230,16 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
         tableRow.setPadding(0, 0, 0, 2);
         tableRow.setBackgroundColor(Color.parseColor("#faad2e"));
         tableLayout.addView(tableRow);
+
+        Log.d("CheckTableLayout1", "Count: "+tableRow.getChildCount());
+        int c = tableRow.getChildCount();
+        if(c > 1){
+            emptyImage.setVisibility(View.INVISIBLE);
+            emptyText.setVisibility(View.INVISIBLE);
+        } else {
+            emptyImage.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -238,16 +254,16 @@ public class InsideStudentClassActivityRecordFragment extends Fragment {
             textView.setText(ndata);
 
             if(ndata.equals("Incomplete")){
-                textView.setTextColor(Color.RED);
+                textView.setTextColor(Color.parseColor("#d94a4a"));
             } else if(ndata.equals("Complete")) {
-                textView.setTextColor(Color.GREEN);
+                textView.setTextColor(Color.parseColor("#19802c"));
             } else {
                 textView.setTextColor(Color.BLACK);
                 textView.setTypeface(null, Typeface.BOLD);
             }
 
             textView.setTextSize(16);
-            textView.setPadding(24, 14, 24, 14);
+            textView.setPadding(32, 16, 32, 16);
             tableRow.setBackgroundColor(Color.WHITE);
             tableRow.addView(textView);
 

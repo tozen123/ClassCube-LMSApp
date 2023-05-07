@@ -1,12 +1,12 @@
 package com.doublehammerstudios.classcube;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.doublehammerstudios.classcube.Fragment.InsideStudentClassActivityRecordFragment;
 
 import java.util.ArrayList;
 
